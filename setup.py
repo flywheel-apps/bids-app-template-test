@@ -11,40 +11,61 @@ import subprocess as sp
 import sys
 import argparse
 import logging
+import tempfile
+import shutil
 
+# This figures out where things are and reads teh gear's manifest:
 from utils.find_gear import *
 
+def setup():
 
-# log actions of this script (which can be run multiplte times) to
-# the default test log dir with spacial name: 'init_log.txt'
-log_name = TEST+'tests/template/logs/init_log.txt'
-fmt = '%(levelname)s - %(name)-8s - %(asctime)s -  %(message)s'
-logging.basicConfig(format = fmt,
-                    filename = log_name,
-                    level = logging.DEBUG)
+    LOG.info('Starting...')
 
-my_name = os.path.basename(__file__)
+    # if the gear has not already been set up, clone the testing template
+    # repository and copy files into the gear while supstituting the
+    # real gears name. 
+    if STATUS == 'no-manifest':
 
-logging.info(my_name+' starting...')
+        LOG.info('Cloning bids-app-template')
 
-# if the gear has not already been set up, clone the testing template
-# repository and copy files into the gear while supstituting the
-# real gears name. 
+        with tempfile.TemporaryDirectory() as tmpdir:
+            
+            cmd = 'git clone git@github.com:flywheel-apps/bids-app-template.git '+\
+                  tmpdir
+            result = sp.run(cmd, shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
 
-# Don't copy the test.sh file in the Dockerfile
+            for ff in ['Dockerfile','manifest.json','run.py']:
+                LOG.info('Copying '+ff)
+                #result = sp.run('ls '+tmpdir, shell=True)
+                o = open(GEAR+'/'+ff,"w") 
+                for line in open(tmpdir+'/'+ff):
+                    line = line.replace("bids-app-template",NAME)
+                    o.write(line + "\n") 
+                o.close()
 
-# Set up a new test in one of three different ways.
+            LOG.info('Copying '+'utils/')
+            shutil.copytree(tmpdir+'/utils', GEAR+'/utils')
 
-# Copy an existing test (using hard links so it won't take up much
-# space)
+    # Don't copy the test.sh file in the Dockerfile
 
-# Download test datw and config files from a Flywheel instance
+    # Set up a new test in one of three different ways.
 
-# Download test data using DataLad
+    # Copy an existing test (using hard links so it won't take up much
+    # space)
 
-# What's next?  Edit the Docerfile/manifest.json/run.py and search for 
-# "editme" (and delete "editme" so you won't see this message any more).
+    # Download test datw and config files from a Flywheel instance
 
-logging.info(my_name+' finished.\n\n')
+    # Download test data using DataLad
+
+    # What's next?  Edit the Docerfile/manifest.json/run.py and search for 
+    # "editme" (and delete "editme" so you won't see this message any more).
+
+    LOG.info('Finished.\n\n')
+
+if __name__ == '__main__':
+
+    print('STATUS is '+STATUS)
+
+    setup()
 
 # vi:set autoindent ts=4 sw=4 expandtab : See Vim, :help 'modeline'

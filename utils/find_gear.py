@@ -11,6 +11,8 @@ Then:
 
 import os
 import json
+import logging
+import sys
 
 
 verbose = False
@@ -46,25 +48,48 @@ if verbose:
     print(f'GEAR="{GEAR}"')
     print(f'TEST="{TEST}"')
 
+# log actions of this script (which can be run multiplte times) to
+# the default test log dir with spacial name: 'init_log.txt'
+log_name = TEST+'tests/template/logs/init_log.txt'
+print(log_name)
+fmt = '%(levelname)s - %(name)-8s - %(asctime)s -  %(message)s'
+logging.basicConfig(format = fmt,
+                    filename = log_name,
+                    level = logging.DEBUG)
+
+cmd_name = os.path.basename(sys.argv[0])
+LOG = logging.getLogger(cmd_name)
+
 # Make sure the gear directory exists
+STATUS = 'OK'
 if os.path.isdir(GEAR):
 
     os.chdir(GEAR)
 
-    with open('manifest.json', 'r') as f:
-        MANIFEST = json.load(f)
+    if os.path.exists('manifest.json'):
 
-    if gear_name != MANIFEST["name"]:
-        print('Gear name in manifest, "'+MANIFEST["name"]+'" '+\
-              'does not match gear name found in path, "'+gear_name+'"')
-        print('Exiting early')
-        sys.exit()
+        with open('manifest.json', 'r') as f:
+            MANIFEST = json.load(f)
+
+        if gear_name != MANIFEST["name"]:
+            print('Gear name in manifest, "'+MANIFEST["name"]+'" '+\
+                  'does not match gear name found in path, "'+gear_name+'"')
+            print('Exiting early')
+            sys.exit()
+        else:
+            if verbose:
+                print('Gear name in manifest matches gear name found in path')
     else:
-        if verbose:
-            print('Gear name in manifest matches gear name found in path')
+        msg = 'Note: manifest.json does not exist in \n'
+        msg += '  '+GEAR
+        LOG.info(msg)
+        STATUS = 'no-manifest'
 
 else:
-    print('ERROR: Path does not exist:')
-    print('  '+GEAR)
+    msg = 'ERROR: Path does not exist:\n'
+    msg += '  '+GEAR
+    LOG.error(msg)
+    STATUS = 'no-gear'
+
 
 # vi:set autoindent ts=4 sw=4 expandtab : See Vim, :help 'modeline'
