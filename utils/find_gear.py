@@ -51,7 +51,9 @@ if verbose:
 # log actions of this script (which can be run multiplte times) to
 # the default test log dir with spacial name: 'init_log.txt'
 log_name = TEST+'tests/template/logs/init_log.txt'
-print(log_name)
+if verbose:
+    print('log name is "'+log_name+'"')
+
 fmt = '%(levelname)s - %(name)-8s - %(asctime)s -  %(message)s'
 logging.basicConfig(format = fmt,
                     filename = log_name,

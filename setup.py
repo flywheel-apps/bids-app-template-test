@@ -19,6 +19,8 @@ from utils.find_gear import *
 
 def setup():
 
+    log.info('STATUS is '+STATUS)
+
     LOG.info('Starting...')
 
     # if the gear has not already been set up, clone the testing template
@@ -39,8 +41,9 @@ def setup():
                 #result = sp.run('ls '+tmpdir, shell=True)
                 o = open(GEAR+'/'+ff,"w") 
                 for line in open(tmpdir+'/'+ff):
-                    line = line.replace("bids-app-template",NAME)
-                    o.write(line + "\n") 
+                    if 'COPY test.sh' not in line:
+                        line = line.replace("bids-app-template",NAME)
+                        o.write(line) 
                 o.close()
 
             LOG.info('Copying '+'utils/')
@@ -63,9 +66,6 @@ def setup():
     LOG.info('Finished.\n\n')
 
 if __name__ == '__main__':
-
-    print('STATUS is '+STATUS)
-
     setup()
 
 # vi:set autoindent ts=4 sw=4 expandtab : See Vim, :help 'modeline'
