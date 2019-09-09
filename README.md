@@ -23,7 +23,7 @@ Clone this testing template, but be sure to use the name of the new
 gear repository created above with “-test” appended to the end, and
 then run the initialization script.  For example:
 
-`git clone git@github.com:flywheel-apps/bids-app-template-test.git`
+`git clone git@github.com:flywheel-apps/bids-app-template-test.git  bids-freesurfer`
 
 `./bids-mriqc-test/setup.py`
 
