@@ -1,19 +1,32 @@
 #!/usr/bin/env python3
+""" bids-app-template-test run.py
+This test runs the "default" test or the given tests.  Test names are the
+directory names in bids-app-template-test/tests/.
+"""
 
 import os
 import json
 import datetime
 import subprocess as sp
 import sys
+import argparse
 
 from utils.find_gear import *
+
+verbose = True
 
 def main(test):
     """ Runs gear with the given test files """
 
-    print(f'Running test {test}')
+    if verbose:
+        print(f'Running test {test}')
 
-    cmd= 'docker run --rm -ti --entrypoint='+FLY0+'run '+\
+    if args.shell:
+        entry = '/bin/bash'
+    else:
+        entry = FLY0+'run.py'
+
+    cmd= 'docker run --rm -ti --entrypoint='+entry+' '+\
          '-v '+TEST+'tests/'+test+'/input:'+FLY0+'input '+\
          '-v '+TEST+'tests/'+test+'/output:'+FLY0+'output '+\
          '-v '+TEST+'tests/'+test+'/config.json:'+FLY0+'config.json '+\
@@ -21,27 +34,50 @@ def main(test):
          '-v '+GEAR+':'+FLY0+'/src '+\
         f'{MANIFEST["custom"]["docker-image"]}'
 
-    print('Command:\n\n'+cmd+'\n')
+    if verbose:
+        print('Command:\n\n'+cmd+'\n')
+
     command = [ w for w in cmd.split() ]
-    result = sp.run(command,stdout=sp.PIPE, stderr=sp.PIPE,
-                    universal_newlines=True)
-    print(f'{cmd.split()[:2]} return code: '+str(result.returncode))
-    #print('output: ',result.stdout)
+
+    if args.shell:
+        result = sp.run(command)
+    else:
+        result = sp.run(command,stdout=sp.PIPE, stderr=sp.PIPE,
+                        universal_newlines=True)
+
+    if verbose:
+        print(f'{cmd.split()[:2]} return code: '+str(result.returncode))
+        print('output: ',result.stdout)
 
     log_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")+'_log.txt'
-    with open(TEST+'tests/'+test+'/logs/'+log_name,'w') as f:
-        f.write(result.stdout)
+    LOG.info('Saving output to '+TEST+'tests/'+test+'/logs/'+log_name)
+    if result.stdout:
+        with open(TEST+'tests/'+test+'/logs/'+log_name,'w') as f:
+            f.write(result.stdout)
+
+    if TESTING == 'basic':
+        LOG.info('Now check the results')
+        LOG.info('Done with '+TESTING+' test.\n')
 
 if __name__ == '__main__':
 
-    print(sys.argv)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("-t", "--test", default='', nargs='*',
+                        help="the test in tests/ to run.  'all' runs all tests.")
+    parser.add_argument("-s", "--shell", action="store_true",
+                        help="run bash in the container instead of run.py.")
+    args = parser.parse_args()
 
-    if len(sys.argv) == 1: # no arguments, run default
+    if args.test == '': # no arguments, run default
 
-        main('default')  # run only the default test
+        if TESTING == 'basic': # unless this is a test
+            main('template')  # run the test for this test template
+
+        else:
+            main('default')  # run only the default test
 
     # check for "run.py all"
-    elif len(sys.argv) == 2 and sys.argv[1] in ['all','All','ALL']:
+    elif args.test in ['all','All','ALL']:
 
         # run each test in the tests directory
         for test in os.listdir(TEST+'tests'):
@@ -49,13 +85,13 @@ if __name__ == '__main__':
     else:
 
         # before running the given tests, make sure they exist
-        for arg in sys.argv[1:]:
+        for arg in args.test:
             if not os.path.isdir(TEST+'tests/'+arg):
                 print('ERROR "'+arg+'" is not a valid test, choices are:')
                 result = sp.run(['ls',TEST+'tests/'])
                 sys.exit(-1)
 
-        for arg in sys.argv[1:]:
+        for arg in args.test:
             main(arg)
 
 # vi:set autoindent ts=4 sw=4 expandtab : See Vim, :help 'modeline'

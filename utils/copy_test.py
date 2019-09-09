@@ -9,7 +9,9 @@ to nowhere).
 import os
 import shutil
 import subprocess as sp
+import argparse
 
+from find_gear import *
 
 def copy(src, dst):
 
@@ -25,5 +27,17 @@ def copy(src, dst):
         print('ERROR: "'+args.src+'" not found.  It should be in')
         print('ls '+TEST+'tests/')
         result = sp.run(['ls',TEST+'tests/'])
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("src",help="(old) source test direcory name (no path)")
+    parser.add_argument("dst",help="(new) destination directory name")
+    args = parser.parse_args()
+
+    src = TEST+'tests/'+args.src
+    dst = TEST+'tests/'+args.dst
+
+    copy(src,dst)
 
 # vi:set autoindent ts=4 sw=4 expandtab : See Vim, :help 'modeline'

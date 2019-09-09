@@ -1,6 +1,6 @@
 """ 
 Using the location of here file, find the path to the
-gear itself assuming this test directory name is the gear name + "_test".
+gear itself assuming this test directory name is the gear name + "-test".
 
 Then:
     Set global variaibles (in ALLCAPPS)
@@ -13,6 +13,7 @@ import os
 import json
 import logging
 import sys
+import shutil
 
 
 verbose = False
@@ -24,6 +25,7 @@ if verbose:
 penultimate_dir = path_to_me.split('/')[-2]
 if verbose:
     print(f'penultimate_dir={penultimate_dir}')
+
 penultimate_dir_split = penultimate_dir.split('-')
 if verbose:
     print(f'penultimate_dir_split={penultimate_dir_split}')
@@ -42,12 +44,6 @@ BASE = '/'.join(path_to_me.split('/')[:-2])+'/'
 GEAR = BASE+NAME
 TEST = BASE+NAME+'-test/'
 
-if verbose:
-    print(f'NAME="{NAME}"')
-    print(f'BASE="{BASE}"')
-    print(f'GEAR="{GEAR}"')
-    print(f'TEST="{TEST}"')
-
 # log actions of this script (which can be run multiplte times) to
 # the default test log dir with spacial name: 'init_log.txt'
 log_name = TEST+'tests/template/logs/init_log.txt'
@@ -62,11 +58,36 @@ logging.basicConfig(format = fmt,
 cmd_name = os.path.basename(sys.argv[0])
 LOG = logging.getLogger(cmd_name)
 
+TESTING = ''
+if NAME == 'bids-app-template': # then test the template inside 'gear'
+    old_gear = GEAR
+    GEAR = TEST+'tests/template/gear/'
+    LOG.info('Testing: GEAR changed from "'+old_gear+'" to "'+GEAR+'"\n')
+
+    TESTING = 'basic'
+
+    if cmd_name == 'setup.py':
+        # remove existing fiiles so they can be re-created:
+        for ff in ['Dockerfile', 'manifest.json', 'run.py', 'test.sh']:
+            if os.path.exists(GEAR+'/'+ff):
+                os.remove(GEAR+'/'+ff)
+        if os.path.exists(GEAR+'/utils'):
+            shutil.rmtree(GEAR+'/utils')
+
+if verbose:
+    print(f'NAME="{NAME}"')
+    print(f'BASE="{BASE}"')
+    print(f'GEAR="{GEAR}"')
+    print(f'TEST="{TEST}"')
+
 # Make sure the gear directory exists
 STATUS = 'OK'
 if os.path.isdir(GEAR):
 
     os.chdir(GEAR)
+
+    import subprocess as sp
+    sp.run(['ls'])
 
     if os.path.exists('manifest.json'):
 
@@ -82,15 +103,14 @@ if os.path.isdir(GEAR):
             if verbose:
                 print('Gear name in manifest matches gear name found in path')
     else:
-        msg = 'Note: manifest.json does not exist in \n'
-        msg += '  '+GEAR
-        LOG.info(msg)
+        msg = 'Note: manifest.json does not exist in '+GEAR
+        LOG.info(msg+'\n')
         STATUS = 'no-manifest'
 
 else:
     msg = 'ERROR: Path does not exist:\n'
     msg += '  '+GEAR
-    LOG.error(msg)
+    LOG.error(msg+'\n')
     STATUS = 'no-gear'
 
 
