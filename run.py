@@ -71,7 +71,7 @@ if __name__ == '__main__':
     if args.test == '': # no arguments, run default
 
         if TESTING == 'basic': # unless this is a test
-            main('template')  # run the test for this test template
+            main('test')  # run the test for this test template
 
         else:
             main('default')  # run only the default test
