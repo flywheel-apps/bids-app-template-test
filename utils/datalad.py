@@ -5,6 +5,7 @@ import json
 
 from utils.find_gear import *
 from utils.get_user_input import *
+from utils.init_test import *
 
 
 def get_datalad_subject(datasource, setname, subject, bids_dir):
@@ -52,14 +53,17 @@ def init_using_datalad():
     print("Useing DataLad...\n")
 
     if TESTING == 'basic':
-        test_to_run = 'template'
-    else:
-        test_to_run = 'default' 
 
-        test_to_run = get_verified_input(test_to_run,
-            "Please enter a name for the new test directory ")
+        test_name = 'test'
 
-    work_dir = TEST+"tests/"+test_to_run+"/work/"
+    else: # not testing,  initialize actual test
+
+        test_name = init_test_directory()
+
+    init_test_subdirs(test_name)
+
+    # this is where to put the "bids" directory with data:
+    work_dir = TEST+"tests/"+test_name+"/work/"
     #print(work_dir)
 
     # Ideally, this would be a good place to querry DataLad to
@@ -70,11 +74,10 @@ def init_using_datalad():
     # putting the URI in the work/bids/ directory.
 
     msg = """
-    Here are some example data sets you can install in this test:
+    Here are some example data sets you can install into the work/bids/ directory:
 
       1) ///dbic/QA/sub-amit/ - single subject with single session,
                                 single anat, dwi, func, 80.8 MB
-                               
 
       2) ///dbic/QA/sub-emmet/ - single subject, multiple sessions with
                                  anat, dwi, fmap, multiple func, 405.4 MB
@@ -83,7 +86,7 @@ def init_using_datalad():
 
                 http://datasets.datalad.org/?dir=/dbic/QA
 
-      4) quit without downloading anything
+      4) don't install anything
     """
 
     ans = get_user_input(msg,
@@ -126,8 +129,8 @@ def init_using_datalad():
                     print('the URI must be in the form of '+
                           '///datasource/setname/subject/')
 
-    else: # 4 so drop out
-        print('You chose 4')
+    else:
+        print('You chose 4, no example data will be installed')
         datasource = ''
         setname = ''
         subject = ''
@@ -142,8 +145,6 @@ def init_using_datalad():
     # create config.json in a test directory from manifest.json
     # and ask user for api key
 
-    api_key = get_verified_input('none', 'Enter an API key')
-
     ff = 'config.json'
 
     if os.path.exists(TEST+ff):
@@ -156,21 +157,23 @@ def init_using_datalad():
             print(msg)
             LOG.info(msg)
 
+            api_key = get_verified_input('none', 'Enter an API key for config.json')
+
             if api_key == 'none' or api_key == '':
                 shutil.copyfile(TEST+'test_files/'+ff,TEST+ff)
 
             else: # copy line-by-line while substituting in API key
 
-                with open(TEST+'tests/template/test_files/'+ff) as config_file:
+                with open(TEST+'tests/'+test_name+'/test_files/'+ff) as config_file:
                     config = json.load(config_file)
 
                 config['inputs']['api_key']['key'] = api_key
 
-                with open(TEST+'tests/template/'+ff, 'w') as outfile:
+                with open(TEST+'tests/'+test_name+'/'+ff, 'w') as outfile:
                     json.dump(config, outfile, indent=4)
 
         else:
-            print('generating config.json from manifest.json (not writenyet)')
+            init_test_config(test_name)
 
 
 # vi:set autoindent ts=4 sw=4 expandtab : See Vim, :help 'modeline'

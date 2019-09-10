@@ -61,9 +61,9 @@ if __name__ == '__main__':
                 print(msg)
                 LOG.info(msg)
                 #result = sp.run('ls '+tmpdir, shell=True)
-                o = open(GEAR+ff,"w") 
+                o = open(GEAR + '/' + ff, "w") 
                 for line in open(tmpdir+'/'+ff):
-                    line.replace('bids-app-template',NAME)
+                    line = line.replace('bids-app-template',NAME)
                     if 'COPY test.sh' in line: # don't copy test.sh in Dockerfile
                         if TESTING == 'basic': # unless this is a test
                             o.write(line)
@@ -75,77 +75,47 @@ if __name__ == '__main__':
             msg = 'Copying '+'utils/'
             print(msg)
             LOG.info(msg)
-            shutil.copytree(tmpdir+'/utils', GEAR+'utils')
+            shutil.copytree(tmpdir + '/utils', GEAR + '/utils')
 
             if TESTING == 'basic': # also copy in the test executable
-                shutil.copyfile(tmpdir+'/test.sh',GEAR+'test.sh')
+                shutil.copyfile(tmpdir + '/test.sh' , GEAR + '/test.sh')
 
-    msg="""\nNow you can set up a new test in one of three different ways:
+    msg="""\nNow you can set up a new test in one of the following ways:
+
+    1) Initialize test directories and crete config.json so that BIDS data
+       will be downloaded from a session given a destination id and type.
      
-    1) Copy an existing test (using hard links so it won't take up much
+    2) Copy an existing test (using hard links so it won't take up much
        extra space)
     
-    2) Download test data and config files from a Flywheel instance
+    3) Download test data and config files from a Flywheel instance
     
-    3) Download test data using DataLad (https://www.datalad.org/)
+    4) Download test data using DataLad (https://www.datalad.org/)
 
-    4) Skip this for now (default).  You can run setup.py any time to add
+    5) Skip this for now (default).  You can run setup.py any time to add
        another test.
     """
-    ans = get_user_input(msg,"Which would you like to do?",['','1','2','3','4'])
+    ans = get_user_input(msg,"Which would you like to do?",['','1','2','3','4','5'])
     # print()
 
-    if ans == '1': # Copy an existing test
-        print("Copying an existing test...\n")
+    elif ans == '1': # init
+        test_name = init_test_directory()
+        init_test_subdirs(test_name)
+        init_test_config(test_name)
 
-        msg = "Choose a test to copy:\n"
-        tests = os.listdir(TEST+'tests/')
-        nn = 1
-        dir_name = dict()
-        choices = []
-        for tt in tests:
-            if tt[0] != '.':
-                msg += "  "+str(nn)+") "+tt+"\n"
-                dir_name[nn] = tt
-                choices.append(str(nn))
-                nn += 1
+    if ans == '2': # Copy an existing test
+        init_by_copying()
 
-        not_done = True
-
-        while not_done:
-
-            ans = get_user_input(msg,"Which would you like to use?",choices)
-
-            new_name = input('Please enter a name for the new test: ')
-
-            print("The new test will be created with this command:\n")
-            cmd = 'utils/copy_test.py '+dir_name[int(ans)]+' '+new_name
-            print('  '+cmd+'\n')
-            print('(You can run that command yourself instead of this script)')
-
-            go_nogo = get_user_input("","",['Proceed','Re-enter','Quit?'])
-
-            if go_nogo == 'p':
-                not_done = False
-            elif go_nogo == 'q':
-                sys.exit()
-
-        command = TEST+cmd # add full path
-        print('Running: '+command)
-        LOG.info('Running" '+command)
-        command = [ w for w in command.split() ]
-        result = sp.run(command)
-
-    elif ans == '2': # Download from Flywheel
+    elif ans == '3': # Download from Flywheel
         print("Downloading from Flywheel...\n")
         print("Aw shucks, this ain't been implemented yet.")
         print('But there is always:')
         print('  fwutil_job_run_local.py')
 
-    elif ans == '3': # Use DataLad
+    elif ans == '4': # Use DataLad
         init_using_datalad()
 
-    # else ans == '4' or '' so drop on out
+    # else ans == '5' or '' so drop on out
 
     msg="""
     What's next?  Edit Dockerfile, manifest.json, run.py and search for 
@@ -164,8 +134,9 @@ if __name__ == '__main__':
     if TESTING == 'basic':
         LOG.info('Now check the results')
         for ff in ['Dockerfile', 'manifest.json', 'run.py', 'test.sh']:
-            if os.path.exists(GEAR+ff):
-                if filecmp.cmp(GEAR+'/'+ff,GEAR+'../test_files/'+ff,shallow=True):
+            if os.path.exists(GEAR + '/' + ff):
+                if filecmp.cmp(GEAR + '/' + ff, GEAR + '/../test_files/' + ff, 
+                               shallow=True):
                     LOG.info('  '+ff+' is same')
                 else:
                     LOG.info('  '+ff+' is DIFFERENT')

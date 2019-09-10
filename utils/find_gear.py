@@ -41,12 +41,12 @@ else:
 FLY0 = '/flywheel/v0/'
 NAME = gear_name
 BASE = '/'.join(path_to_me.split('/')[:-2])+'/'
-GEAR = BASE+NAME
+GEAR = BASE+NAME  # note: no ending /
 TEST = BASE+NAME+'-test/'
 
 # log actions of this script (which can be run multiplte times) to
 # the default test log dir with spacial name: 'init_log.txt'
-log_name = TEST+'tests/template/logs/init_log.txt'
+log_name = TEST+'tests/test/logs/init_log.txt'
 if verbose:
     print('log name is "'+log_name+'"')
 
@@ -58,10 +58,14 @@ logging.basicConfig(format = fmt,
 cmd_name = os.path.basename(sys.argv[0])
 LOG = logging.getLogger(cmd_name)
 
+msg = 'Finding gear...'
+print(msg)
+LOG.info(msg)
+
 TESTING = ''
 if NAME == 'bids-app-template': # then test the template inside 'gear'
     old_gear = GEAR
-    GEAR = TEST+'tests/template/gear/'
+    GEAR = TEST+'tests/template/gear'
     LOG.info('Testing: GEAR changed from "'+old_gear+'" to "'+GEAR+'"\n')
 
     TESTING = 'basic'
@@ -69,10 +73,10 @@ if NAME == 'bids-app-template': # then test the template inside 'gear'
     if cmd_name == 'setup.py':
         # remove existing fiiles so they can be re-created:
         for ff in ['Dockerfile', 'manifest.json', 'run.py', 'test.sh']:
-            if os.path.exists(GEAR+'/'+ff):
-                os.remove(GEAR+'/'+ff)
-        if os.path.exists(GEAR+'/utils'):
-            shutil.rmtree(GEAR+'/utils')
+            if os.path.exists(GEAR + '/' + ff):
+                os.remove(GEAR + '/' + ff)
+        if os.path.exists(GEAR + '/utils'):
+            shutil.rmtree(GEAR + '/utils')
 
 if verbose:
     print(f'NAME="{NAME}"')
@@ -86,9 +90,6 @@ if os.path.isdir(GEAR):
 
     os.chdir(GEAR)
 
-    import subprocess as sp
-    sp.run(['ls'])
-
     if os.path.exists('manifest.json'):
 
         with open('manifest.json', 'r') as f:
@@ -100,8 +101,10 @@ if os.path.isdir(GEAR):
             print('Exiting early')
             sys.exit()
         else:
-            if verbose:
-                print('Gear name in manifest matches gear name found in path')
+            msg = 'Gear name in manifest matches gear name found in path'
+            print(msg)
+            LOG.info(msg+'\n')
+
     else:
         msg = 'Note: manifest.json does not exist in '+GEAR
         LOG.info(msg+'\n')

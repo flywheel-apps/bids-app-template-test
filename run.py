@@ -21,6 +21,10 @@ def main(test):
     if verbose:
         print(f'Running test {test}')
 
+    # Run any desired initialization for this test
+    print('Running '+('tests/' + test + '/src/start').replace('/','.'))
+    __import__(('tests/' + test + '/src/start').replace('/','.'))
+
     if args.shell:
         entry = '/bin/bash'
     else:
@@ -54,6 +58,10 @@ def main(test):
     if result.stdout:
         with open(TEST+'tests/'+test+'/logs/'+log_name,'w') as f:
             f.write(result.stdout)
+
+    # Run any desired cleanup for this test
+    print('Running '+('tests/' + test + '/src/finish').replace('/','.'))
+    __import__(('tests/' + test + '/src/finish').replace('/','.'))
 
     if TESTING == 'basic':
         LOG.info('Now check the results')
