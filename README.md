@@ -6,7 +6,7 @@ To create a bids-app gear, *do not* just clone this repository, follow these ste
 ## Identify BIDS compatible open source code
 
 * See https://github.com/BIDS-Apps.  Maybe what you want is already there.
-* Note the open source license.  It need to be commercially friendly.
+* Note the open source license.  It needs to be commercially friendly.
 
 ## Create GitHub Project
 
