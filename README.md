@@ -21,7 +21,7 @@ On https://github.com/flywheel-apps, hit the "new" button.
 ## Clone this repository using a different name
 
 Clone this testing template in the same directory and be sure to use the name of the new
-gear repository created above with “-test” appended to the end.  For example:
+gear repository created above *with “-test” appended* to the end.  For example:
 
 `git clone git@github.com:flywheel-apps/bids-app-template-test.git  bids-freesurfer-test`
 
