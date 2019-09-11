@@ -16,7 +16,13 @@ On https://github.com/flywheel-apps, hit the "new" button.
   * Keep it private for now, not that nobody should see it, but there's no need for a lot of intrusive questions about it before it is even released for the first time.  
   * Check the "Initialize this repository with a README", add a .gitignore for Python, and set the license to the same license as the open source code.
   * Press the "Create Repository" button.
-  * Clone your new project locally: press "Clone or download" and then, e.g. `git clone git@github.com:flywheel-apps/bids-fmriprep.git`
+  * Clone your new project locally: press "Clone or download" and then, create a new branch for editing the repository: 
+```
+git clone git@github.com:flywheel-apps/bids-app-name.git
+cd bids-app-name
+git checkout -b dev
+git push -u origin dev
+```
 
 ## Clone this repository using a different name
 
@@ -24,6 +30,15 @@ Clone this testing template in the same directory and be sure to use the name of
 gear repository created above **with “-test” appended** to the end.  For example:
 
 `git clone git@github.com:flywheel-apps/bids-app-template-test.git  bids-freesurfer-test`
+
+Create a new branch for editing that repository:
+
+```
+cd bids-freesurfer-test
+git checkout -b dev
+git push -u origin dev
+```
+It's impmortant to change to a new branch because you will want to edit some of the files to make your tests work.  As you improve the way bids-apps are tested, you may want to submit a pull request to share with the community!
 
 Then run the initialization script like:
 
