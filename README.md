@@ -48,10 +48,12 @@ See [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Bui
   * manifest.json
   * Dockerfile
   * run.py
-  
-Develop and test the gear locally with the commands inside `\<your-new-gear-name\-test/`:
 
- * `./setup.py` to create a new test configurations,
+The instructions on Building Gears are very general.  The usual `input/` and `output/` folders are available while running in the container, but in addition to that, BIDS-App gears can find BIDS formatted data in the directory `/flywheel/v0/work/bids/` (or just `work/bids/`).
+
+Develop and test the gear locally with the commands inside `\<your-new-gear-name\-test/`, use
+
+ * `./setup.py` to create a new test configuration,
  * `./build.py` to build the container, and
  * `./run.py` to run the default test or `run.py testname` command to run a test called “testname".
 
