@@ -98,12 +98,12 @@ if __name__ == '__main__':
     ans = get_user_input(msg,"Which would you like to do?",['','1','2','3','4','5'])
     # print()
 
-    elif ans == '1': # init
+    if ans == '1': # init
         test_name = init_test_directory()
         init_test_subdirs(test_name)
         init_test_config(test_name)
 
-    if ans == '2': # Copy an existing test
+    elif ans == '2': # Copy an existing test
         init_by_copying()
 
     elif ans == '3': # Download from Flywheel
