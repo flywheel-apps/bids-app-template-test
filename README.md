@@ -36,8 +36,8 @@ and copies the following files into the new gear repository:
 
 `Dockerfile   manifest.json   run.py   utils/`
 
-The setup.py command uses the name you gave to the directory (bids-freesurfer-test) to set
-the new gear’s proper name in Dockerfile and manifest.json.  The command
+The `setup.py` command uses the name you gave to the directory (e.e. "bids-freesurfer-test") to set
+the new gear’s proper name inside Dockerfile and manifest.json.  The command
 also gives you a chance to set up a test configuration but you can
 choose to do that later.  After the gear is initialized the first
 time you run `setup.py`, you can run `setup.py` as many times as you like to
@@ -51,9 +51,9 @@ See [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Bui
   
 Develop and test the gear locally with the commands inside `\<your-new-gear-name\-test/`:
 
-`./setup.py` to create a new test configurations,
-`./build.py` to build the container, 
-`./run.py` to run the default test or `run.py testname` command to run a test called “testname".
+ * `./setup.py` to create a new test configurations,
+ * `./build.py` to build the container, and
+ * `./run.py` to run the default test or `run.py testname` command to run a test called “testname".
 
 `./setup.py` will create test configurations, starting with "default" in `\<your-new-gear-name\-test/tests/`.
 
