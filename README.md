@@ -49,7 +49,7 @@ See [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Bui
   * Dockerfile
   * run.py
 
-The instructions on Building Gears are very general.  The usual `input/` and `output/` folders are available while running in the container, but in addition to that, BIDS-App gears can find BIDS formatted data in the directory `/flywheel/v0/work/bids/` (or just `work/bids/`).
+The instructions linkded above on Building Gears are very general.  The usual `input/` and `output/` folders are available while running in the container, but in addition to that, BIDS-App gears can find BIDS formatted data in the directory `/flywheel/v0/work/bids/` (or just `work/bids/`).
 
 Develop and test the gear locally with the commands inside `\<your-new-gear-name\-test/`, use
 
