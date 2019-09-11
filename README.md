@@ -38,18 +38,11 @@ cd bids-freesurfer-test
 git checkout -b dev
 git push -u origin dev
 ```
-It's important to change to a change to a new branch because you will want to edit some of the files to make your tests work.  As you improve the way your bids-app is tested, you may also want to submit a pull request to share with the community!
+It's important to change to a new branch because you will want to edit some of the files to make your tests work.  As you improve the way your bids-app is tested, you may also want to submit a pull request to share with the community!
 
 Then run the initialization script inside `bids-freesurfer-test/`:
 
 `./setup.py`
-
-The scripts can be run from anywhere.  For instance, from within the bids-app:
-
-```
-cd bids-freesurfer
-../bids-freesurfer-test/setup.py
-```
 
 That clone command saves the bids-app-template-test repository as
 a test repository for the new gear.  The `setup.py` command clones
@@ -60,8 +53,7 @@ and copies the following files into the new gear repository:
 
 The `setup.py` command uses the name you gave to the directory (e.g. "bids-freesurfer-test") to set
 the new gear’s proper name inside Dockerfile and manifest.json (e.g. "bids-freesurfer").  The command
-also gives you a chance to set up a test configuration but you can
-choose to do that later.  After the gear is initialized the first
+also gives you a chance to set up a test configuration but you should probably do that later, after the `manifest.json` file is edited.  After the gear is initialized the first
 time you run `setup.py`, you can run `setup.py` as many times as you like to
 add additional test configurations.
 
@@ -73,14 +65,26 @@ See [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Bui
 
 The instructions linkded above on Building Gears are very general.  The usual `input/` and `output/` folders are available while running in the container, but in addition to that, BIDS-App gears can find BIDS formatted data in the directory `/flywheel/v0/work/bids/` (or just `work/bids/`).
 
-develop and test the gear locally using the commands inside `<your-new-gear-name>-test/`:
+You will be developing and testing the gear locally using the commands inside `<your-new-gear-name>-test/`:
 
  * `./setup.py` to create a new test configuration,
  * `./build.py` to build the container, and
  * `./run.py` to run the default test or `run.py testname` to run a test called “testname".
 
+The scripts can be run from anywhere.  For instance, to re-build and then run the Docker container from within the bids-app after editing stuff there:
+
+```
+cd bids-freesurfer
+vim run.py
+../bids-freesurfer-test/build.py
+../bids-freesurfer-test/run.py
+```
+
+Note that the last command assumes that you have already set up the "default" test, but you probably have not done that yet.  It's a good idea to first edit the `Docker`, `manifest.json`, and `run.py` files first, and then use `setup.py` to create the "default" test.
+
 `./setup.py` will create test configurations in the `tests/` sub-folder of `<your-new-gear-name>-test/`.  The name of the sub-folder is the name of the test.  Test folders contain these:
-```config.json   input/      logs/       output/     src/        test_files/ work/```
+`config.json   input/      logs/       output/     src/        test_files/ work/`
 All of these items will be mounted inside the running Docker container by the `run.py` script except for `test_files/`.
+The idea here is that testing your bids-gear may require some initialization before running the gear and some clean-up afterwards.  In the `src/` directory you'll fine two code stubs, `start.py` and `finish.py` to do the set-up and clean-up.  These are called by the `bids-app-test/run.py` script (not the `run.py` in the gear itself) and all of this takes place _outside_ the container in preparation for the test.  Because of this, the `test_files/` directory can be used to hold files that, for instance, need to be copied into the `input/` directory before the test by `start.py`.  Then the gear is run.  `test_files/` can also hold files that, for instance, can be compared with results in the `output/` directory after the gear is run.  
 
 As you develop new best practices for developing BIDS-App gears, be sure to add them both here and also in [bids-app-template](https://github.com/flywheel-apps/bids-app-template).
