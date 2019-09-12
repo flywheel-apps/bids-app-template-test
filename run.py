@@ -25,7 +25,7 @@ def main(test):
         print('Sorry, the test "' + test + '" does not exist')
         exit(-1)
 
-    if not os.path.isfile(TEST + 'tests/' + test + 'config.json'):
+    if not os.path.isfile(TEST + 'tests/' + test + '/config.json'):
         print('Sorry, the test "' + test + '" does not have config.json')
         print('You can run setup.py to create one.')
         exit(-1)
