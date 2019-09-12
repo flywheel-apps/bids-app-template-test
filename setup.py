@@ -82,8 +82,9 @@ if __name__ == '__main__':
 
     msg="""\nNow you can set up a new test in one of the following ways:
 
-    1) Initialize test directories and crete config.json so that BIDS data
-       will be downloaded from a session given a destination id and type.
+    1) Initialize a test and crete config.json by providing a Flywheel api
+       key, destination id and type.  BIDS data will be downloaded from the
+       specified session the first time the gear is run.
      
     2) Copy an existing test (using hard links so it won't take up much
        extra space)
