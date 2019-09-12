@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""
-"""
+"""Initialize test directories by geting information from the user"""
 
 import os
 import subprocess as sp
+import shutil
 
 from utils.find_gear import *
 from utils.get_user_input import *
 
 
 def init_test_directory():
-    """ create new test directory with the given name """
+    """create new test directory with the given name"""
 
     # name of test will be directory name in 'tests/'
     test_name = 'default' 
@@ -20,8 +20,9 @@ def init_test_directory():
     test_dir = TEST + 'tests/' + test_name
     if not os.path.exists(test_dir):
         os.mkdir(test_dir)
-        with open(TEST + 'tests/.gitignore', 'a') as gf:
-            gf.write(test_name+'\n')
+        # maybe it would be a good idea to ignore that test?
+        # with open(TEST + 'tests/.gitignore', 'a') as gf:
+        #     gf.write(test_name+'\n')
     else:
         print('The test directory already exists\n  '+test_dir)
 
@@ -29,7 +30,7 @@ def init_test_directory():
 
 
 def init_test_subdirs(test_name):
-    """ create all necessary test sub-directories if they don't already exist """
+    """Create all necessary test sub-directories if they don't already exist"""
 
     dirs_to_create = ['input', 'logs', 'output', 'src', 'test_files', 'work']
     for dd in dirs_to_create:
@@ -37,24 +38,22 @@ def init_test_subdirs(test_name):
         if not os.path.exists(adir):
             os.mkdir(adir)
 
-    # create the two files that are imported before and after tests in run.py
+    # create the two files that are imported before and after running the gear in run.py
     files_to_create = ['start.py', 'finish.py']
     for ff in files_to_create:
-        afile = TEST+"tests/"+test_name+'/src/'+ff
-        if not os.path.exists(afile):
-            with open(afile, 'w') as f:
-                f.write('\n')
-                f.write('\n')
-                f.write("# vi:set autoindent ts=4 sw=4 expandtab "+\
-                        ": See Vim, :help 'modeline'\n")
+        fromfile = TEST+'tests/test/src/'+ff
+        tofile = TEST+"tests/"+test_name+'/src/'+ff
+        if not os.path.exists(tofile):
+            shutil.copy(fromfile,tofile)
 
     print('\nHere is what is inside "' + test_name + '"')
     sp.run(['ls',TEST + "tests/" + test_name])
 
 
 def init_test_config(test_name):
+    """Generating config.json from manifest.json"""
 
-    print('generating config.json from manifest.json')
+    print(init_test_config.__doc__)
 
     with open(GEAR + '/manifest.json') as manifest_file:
         manifest = json.load(manifest_file)
@@ -78,16 +77,16 @@ def init_test_config(test_name):
             config['inputs']['api_key']['base'] = manifest['inputs']['key']['base']
             config['inputs']['api_key']['read-only'] = manifest['inputs']['key']['read-only']
 
-    # ask user for key
+    # ask user for key (the default here is from the TOME project)
     dest_id = get_verified_input('5d2761383289d60037e8b180', 
                                  'Enter a destination id for config.json')
     dest_type = get_verified_input('acquisition', 'Enter an destination type for config.json')
-    # TODO: askuser for a session id directly, then find an apropriate destination from
+    # TODO: ask user for a session id directly, then find an apropriate destination from
     # that session.  Any acquisition or analysis should do since it's parent will be the
     # session.
 
-    config['destination']['type'] = 'acquisition'
-    config['destination']['id'] = '5d2761383289d60037e8b180'
+    config['destination']['type'] = dest_type
+    config['destination']['id'] = dest_id
 
     # grab all default items in the manifest and save in config
     for key, val in manifest['config'].items():
