@@ -28,11 +28,13 @@ cd ..
 
 ## Clone this repository using a different name
 
-Clone this testing template in the directory above the new bids-app (so the two will be in the same directory) and be sure to use the name of the new gear repository created above **with “-test” appended** to the end.  The reason for this naming scheme is that the scripts in the test environment will look for the new gear at the same directory level but without the "-test" part.  For example:
+Clone this testing template in the directory above the new bids-app (so the two will be in the same directory) and be sure to use the name of the new gear repository created above **with “-test” appended** to the end.  For example:
 
 `git clone git@github.com:flywheel-apps/bids-app-template-test.git  bids-app-test`
 
-Create a new branch for editing that repository:
+The reason for this naming scheme is that the scripts in the test environment will look for the new gear at the same directory level but without the "-test" part.  
+
+Then create a new branch for editing the test repository:
 ```
 cd bids-app-test
 git checkout -b dev
