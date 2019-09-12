@@ -19,10 +19,15 @@ def main(test):
     """ Runs gear with the given test files """
 
     if verbose:
-        print(f'Running test {test}')
+        print('Running test "' + test + '"')
 
     if not os.path.exists(TEST + 'tests/' + test):
         print('Sorry, the test "' + test + '" does not exist')
+        exit(-1)
+
+    if not os.path.isfile(TEST + 'tests/' + test + 'config.json'):
+        print('Sorry, the test "' + test + '" does not have config.json')
+        print('You can run setup.py to create one.')
         exit(-1)
 
     # Run any desired initialization for this test
