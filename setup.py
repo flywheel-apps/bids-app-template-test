@@ -68,6 +68,12 @@ if __name__ == '__main__':
                         if TESTING == 'basic': # unless this is a test
                             o.write(line)
                             o.write('RUN chmod a+x ${FLYWHEEL}/test.sh') 
+                    elif "['command'] = ['echo']" in line:
+                        if TESTING == 'basic': # if this is a test
+                            # have run.py run the test instead of echo
+                            o.write("        context.gear_dict['command'] = ['./test.sh']")
+                        else:
+                            o.write(line)
                     else:
                         o.write(line) 
                 o.close()
@@ -133,7 +139,7 @@ if __name__ == '__main__':
     return_code = 0
 
     if TESTING == 'basic':
-        LOG.info('Now check the results')
+        LOG.info('Now check the results of setup.py')
         for ff in ['Dockerfile', 'manifest.json', 'run.py', 'test.sh']:
             if os.path.exists(GEAR + '/' + ff):
                 if filecmp.cmp(GEAR + '/' + ff, GEAR + '/../test_files/' + ff, 

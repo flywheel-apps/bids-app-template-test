@@ -54,7 +54,7 @@ def init_using_datalad():
 
     if TESTING == 'basic':
 
-        test_name = 'test'
+        test_name = 'test' # use the existing test directory instead of creating on
 
     else: # not testing,  initialize actual test
 

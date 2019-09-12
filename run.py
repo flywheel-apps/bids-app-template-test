@@ -64,7 +64,7 @@ def main(test):
     __import__(('tests/' + test + '/src/finish').replace('/','.'))
 
     if TESTING == 'basic':
-        LOG.info('Now check the results')
+        LOG.info('Now check the results of running')
         LOG.info('Done with '+TESTING+' test.\n')
 
 if __name__ == '__main__':

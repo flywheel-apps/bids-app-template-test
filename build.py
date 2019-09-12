@@ -40,7 +40,7 @@ if STATUS == 'OK':
             print(result.stdout)
 
     if TESTING == 'basic':
-        LOG.info('Now check the results')
+        LOG.info('Now check the results of bilding')
         LOG.info('Done with '+TESTING+' test.\n')
 
 sys.exit(return_code)
