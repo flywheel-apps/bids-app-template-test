@@ -88,7 +88,7 @@ if __name__ == '__main__':
 
     msg="""\nNow you can set up a new test in one of the following ways:
 
-    1) Initialize a test and crete config.json by providing a Flywheel api
+    1) Initialize a test and create config.json by providing a Flywheel api
        key, destination id and type.  BIDS data will be downloaded from the
        specified session the first time the gear is run.
      
