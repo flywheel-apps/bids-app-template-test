@@ -55,7 +55,7 @@ The `setup.py` command uses the name you gave to the directory "bids-app-test" t
 
 ## How things work
 
-### Gears
+### Building gears
 
 Now that you have two directories: the new gear itself and a “-test” directory.  It's time for the real software development to begin.  See [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Building-Gears) information on the gear specification and what needs to be in each of the files:
   * manifest.json
@@ -81,7 +81,7 @@ vim run.py
 
 Note that the last command assumes that you have already set up the "default" test, but you probably have not done that yet.  It's a good idea to first edit the `Docker`, `manifest.json`, and `run.py` files, and then use `setup.py` to create the "default" test.  This is because running the gear requires a `config.json` file and `setup` can use `manifest.json` to create it.  More on this later.
 
-### How test configurations work
+### Testing gears
 
 `./setup.py` creates test configurations in the `tests/` sub-folder of `<your-new-gear-name>-test/`.  The name of the sub-folder is the name of the test.  Test folders contain these:
 
@@ -100,7 +100,7 @@ Instead of actually running the gear by calling `/flywheel/v0/run.py` it will se
 
 If you want to use PyCharm to debug from inside the container, `bids-app-test/run.py` prints out the `docker run ...` command so you can copy and paste all of those `-v` volumes into the configuration and you'll be in the same testing environment.
 
-## Search for "editme"
+## Edit gear files
 
 Now that you know how things generally work, it's time to edit `Docker`, `manifest.json`, and `run.py` and also the utility scripts in `bids-gear/utils/` as necessary.  The scripts in `utils/` provide functionality that help with BIDS-App gears.  For example, `download()` in `utils/bids.py` is used to download data in BIDS format from a flywheel instance (given the proper settings in the gears `config.json`.  It has a nice feature for debugging: if the BIDS data has already been downloaded, it won't download it again.  That will save a lot of time.  When you edit `bids-gear/run.py`, search for the string "editme".  This will provide help in configuring `run.py` to run your gear and also indicate the optional features (like running bids-validator before running the main code). 
 
