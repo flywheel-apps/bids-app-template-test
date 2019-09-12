@@ -30,7 +30,7 @@ cd ..
 
 Clone this testing template in the directory above the new bids-app (so the two will be in the same directory) and be sure to use the name of the new gear repository created above **with “-test” appended** to the end.  For example, run:
 
-`git clone git@github.com:flywheel-apps/bids-app-template-test.git  bids-app-test`
+```git clone git@github.com:flywheel-apps/bids-app-template-test.git  bids-app-test```
 
 where the `bids-app` part of `bids-app-test` is the name of the new gear you created on GitHub.  The reason for this naming scheme is that the scripts in the test environment will look for the new gear at the same directory level but without the "-test" part.  
 
