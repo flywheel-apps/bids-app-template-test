@@ -28,11 +28,11 @@ cd ..
 
 ## Clone this repository using a different name
 
-Clone this testing template in the directory above the new bids-app (so the two will be in the same directory) and be sure to use the name of the new gear repository created above **with “-test” appended** to the end.  For example:
+Clone this testing template in the directory above the new bids-app (so the two will be in the same directory) and be sure to use the name of the new gear repository created above **with “-test” appended** to the end.  For example, run:
 
 `git clone git@github.com:flywheel-apps/bids-app-template-test.git  bids-app-test`
 
-The reason for this naming scheme is that the scripts in the test environment will look for the new gear at the same directory level but without the "-test" part.  
+where the `bids-app` part of `bids-app-test` is the name of the new gear you created on GitHub.  The reason for this naming scheme is that the scripts in the test environment will look for the new gear at the same directory level but without the "-test" part.  
 
 Then create a new branch for editing the test repository:
 ```
@@ -41,7 +41,7 @@ git checkout -b dev
 ```
 It's important to change to a new branch in the "-test" repository because you will want to edit some of the files to make your tests work.  As you improve the way your bids-app is tested, you may also want to submit a pull request to share with the community!  Note that if you do not have permission to edit flywheel-apps directly, you will need to fork your own repository and clone it into the proper name as shown above.
 
-Now check that your new `bids-app` and `bids-app-test` are in the same directory.  Then run the initialization script inside `bids-app-test/`:
+Now make sure that your new `bids-app` and `bids-app-test` are in the same directory.  Then run the initialization script inside `bids-app-test/`:
 
 `./setup.py`
 
