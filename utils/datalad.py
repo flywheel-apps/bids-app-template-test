@@ -50,7 +50,9 @@ def get_datalad_subject(datasource, setname, subject, bids_dir):
 def init_using_datalad():
     """ This initializes a test using data from datalad """
 
-    print("Useing DataLad...\n")
+    msg = "Useing DataLad...\n"
+    print(msg)
+    LOG.info(msg)
 
     if TESTING == 'basic':
 
@@ -137,8 +139,11 @@ def init_using_datalad():
 
     # actually grab the data
     if datasource != '':
-        print('Downloading ///' + datasource +'/'+ setname +'/'+ subject
-              +'/ into ' + work_dir)
+        msg = 'Downloading ///' + datasource +'/'+ setname +'/'+ subject +\
+              '/ into ' + work_dir
+        print(msg)
+        LOG.info(msg)
+
         get_datalad_subject(datasource, setname, subject, work_dir)
         os.rename(work_dir + setname, work_dir + 'bids')
 
@@ -148,7 +153,9 @@ def init_using_datalad():
     ff = 'config.json'
 
     if os.path.exists(TEST+ff):
-        print('Using existing config.json file')
+        msg = 'Using existing config.json file'
+        print(msg)
+        LOG.info(msg)
 
     else:
         if TESTING == 'basic': # use the config file in test_files

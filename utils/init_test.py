@@ -23,8 +23,13 @@ def init_test_directory():
         # maybe it would be a good idea to ignore that test?
         # with open(TEST + 'tests/.gitignore', 'a') as gf:
         #     gf.write(test_name+'\n')
+        msg = 'Created directory:\n  ' + test_dir
+        print(msg)
+        LOG.info(msg)
     else:
-        print('The test directory already exists\n  '+test_dir)
+        msg = 'The test directory already exists\n  ' + test_dir
+        print(msg)
+        LOG.info(msg)
 
     return test_name
 
@@ -46,6 +51,10 @@ def init_test_subdirs(test_name):
         if not os.path.exists(tofile):
             shutil.copy(fromfile,tofile)
 
+    msg = 'Created directories: ' + ' '.join(d for d in files_to_create)
+    print(msg)
+    LOG.info(msg)
+
     print('\nHere is what is inside "' + test_name + '"')
     sp.run(['ls',TEST + "tests/" + test_name])
 
@@ -53,7 +62,9 @@ def init_test_subdirs(test_name):
 def init_test_config(test_name):
     """Generating config.json from manifest.json"""
 
-    print(init_test_config.__doc__)
+    msg = init_test_config.__doc__
+    print(msg)
+    LOG.info(msg)
 
     with open(GEAR + '/manifest.json') as manifest_file:
         manifest = json.load(manifest_file)
