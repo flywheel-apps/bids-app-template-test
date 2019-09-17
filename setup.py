@@ -19,7 +19,8 @@ import filecmp
 from utils.find_gear import *
 from utils.get_user_input import *
 from utils.datalad import *
-
+from utils.init_test import *
+from utils.copy_test import *
 
 if __name__ == '__main__':
 

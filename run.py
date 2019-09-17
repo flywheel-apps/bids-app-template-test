@@ -44,7 +44,7 @@ def main(test):
          '-v '+TEST+'tests/'+test+'/output:'+FLY0+'output '+\
          '-v '+TEST+'tests/'+test+'/config.json:'+FLY0+'config.json '+\
          '-v '+TEST+'tests/'+test+'/work:'+FLY0+'work '+\
-         '-v '+GEAR+':'+FLY0+'/src '+\
+         '-v '+GEAR+':'+FLY0+'src '+\
         f'{MANIFEST["custom"]["docker-image"]}'
 
     if verbose:

@@ -11,8 +11,8 @@ import shutil
 import subprocess as sp
 import argparse
 
-from find_gear import *
-from get_user_input import *
+from .find_gear import *
+from .get_user_input import *
 
 
 def copy(src, dst):
