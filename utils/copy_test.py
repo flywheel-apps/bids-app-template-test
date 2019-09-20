@@ -11,9 +11,6 @@ import shutil
 import subprocess as sp
 import argparse
 
-from .find_gear import *
-from .get_user_input import *
-
 
 def copy(src, dst):
     """ Copies a test directory and deletes all old log files.  """
@@ -84,6 +81,9 @@ def init_by_copying():
 
 if __name__ == '__main__':
 
+    from find_gear import *
+    from get_user_input import *
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("src",help="(old) source test direcory name (no path)")
     parser.add_argument("dst",help="(new) destination directory name")
@@ -93,5 +93,11 @@ if __name__ == '__main__':
     dst = TEST+'tests/'+args.dst
 
     copy(src,dst)
+
+else:
+
+    from .find_gear import *
+    from .get_user_input import *
+
 
 # vi:set autoindent ts=4 sw=4 expandtab : See Vim, :help 'modeline'

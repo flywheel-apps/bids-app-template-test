@@ -92,12 +92,16 @@ if __name__ == '__main__':
     1) Initialize a test and create config.json by providing a Flywheel api
        key, destination id and type.  BIDS data will be downloaded from the
        specified session the first time the gear is run.
-     
+
     2) Copy an existing test (using hard links so it won't take up much
-       extra space)
-    
+       extra space).  This will copy all of the files so yo will have to
+       delete the ones you do not want to keep.
+       Note: this will give errors if DataLad was used to grab the
+       data: it will complain about the files that are missing
+       (because only one subject was actually downloaded).
+
     3) Download test data and config files from a Flywheel instance
-    
+
     4) Download test data using DataLad (https://www.datalad.org/)
 
     5) Skip this for now (default).  You can run setup.py any time to add
