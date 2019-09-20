@@ -106,6 +106,12 @@ if __name__ == '__main__':
 
     5) Skip this for now (default).  You can run setup.py any time to add
        another test.
+
+    6) TODO: (not yet working here)
+       Get data from https://github.com/bids-standard/bids-examples
+       where all big files (e.g. .nii .dcm) are empty.  This is good for testing
+       BIDS curation and might be useful for testing basic gear functionality
+       using lightweight data.
     """
     ans = get_user_input(msg,"Which would you like to do?",['','1','2','3','4','5'])
     # print()
