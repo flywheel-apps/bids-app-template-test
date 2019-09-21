@@ -15,12 +15,16 @@ import tempfile
 import shutil
 import filecmp
 
-# This figures out where things are and reads teh gear's manifest:
 from utils.find_gear import *
 from utils.get_user_input import *
 from utils.datalad import *
 from utils.init_test import *
 from utils.copy_test import *
+
+
+# helpful for development:
+use_dev_branch = True 
+
 
 if __name__ == '__main__':
 
@@ -52,7 +56,13 @@ if __name__ == '__main__':
 
         with tempfile.TemporaryDirectory() as tmpdir:
             
-            cmd = 'git clone git@github.com:flywheel-apps/bids-app-template.git '+\
+            if use_dev_branch:
+                branch = ' --branch dev '
+            else:
+                branch = ''
+
+            cmd = 'git clone ' + branch +\
+                  'git@github.com:flywheel-apps/bids-app-template.git '+\
                   tmpdir
             result = sp.run(cmd, shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
 
@@ -72,7 +82,7 @@ if __name__ == '__main__':
                     elif "['command'] = ['echo']" in line:
                         if TESTING == 'basic': # if this is a test
                             # have run.py run the test instead of echo
-                            o.write("        context.gear_dict['command'] = ['./test.sh']")
+                            o.write("        command = ['./test.sh']")
                         else:
                             o.write(line)
                     else:
@@ -118,7 +128,7 @@ if __name__ == '__main__':
        BIDS curation and might be useful for testing basic gear functionality
        using lightweight data.
     """
-    ans = get_user_input(msg,"Which would you like to do?",['','1','2','3','4','5'])
+    ans = get_user_input(msg,"Which would you like to do?",['','0','1','2','3','4','5'])
     # print()
 
     if ans == '0': # init using manifest

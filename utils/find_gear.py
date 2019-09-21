@@ -1,12 +1,12 @@
 """ 
-Using the location of here file, find the path to the
-gear itself assuming this test directory name is the gear name + "-test".
+Using the location of this here file, find the path to the gear itself 
+assuming this test directory name is the gear name + "-test".
 
 Then:
     Set global variaibles (in ALLCAPPS)
     Change into the gear directory
     Open the manifest.json as MANIFEST
-    Make sure the gear name matches
+    Make sure the gear name matches and return STATUS
 """
 
 import os
