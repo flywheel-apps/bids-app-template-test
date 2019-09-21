@@ -86,12 +86,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if args.test == '': # no arguments, run default
-
-        if TESTING == 'basic': # unless this is a test
-            test = 'test'
-        else:
-            test = 'default'  # run only the default test
-
+        test = 'default'  # run only the default test
         main(test)  # run the test for this test template
 
     # check for "run.py all"
@@ -104,12 +99,12 @@ if __name__ == '__main__':
 
         # before running the given tests, make sure they exist
         for test in args.test:
-            if not os.path.isdir(TEST+'tests/'+arg):
-                print('ERROR "'+arg+'" is not a valid test, choices are:')
+            if not os.path.isdir(TEST+'tests/'+test):
+                print('ERROR "'+test+'" is not a valid test, choices are:')
                 result = sp.run(['ls',TEST+'tests/'])
                 sys.exit(-1)
 
         for test in args.test:
-            main(arg)
+            main(test)
 
 # vi:set autoindent ts=4 sw=4 expandtab : See Vim, :help 'modeline'

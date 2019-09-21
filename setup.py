@@ -89,9 +89,14 @@ if __name__ == '__main__':
 
     msg="""\nNow you can set up a new test in one of the following ways:
 
-    1) Initialize a test and create config.json by providing a Flywheel api
-       key, destination id and type.  BIDS data will be downloaded from the
-       specified session the first time the gear is run.
+    0) Recommended: Initialize a test and create config.json by entering a
+       Flywheel api key, destination id and type.  The defaults in manifest.json
+       file are used to create config.json so it must  already exist.  BIDS data
+       will be downloaded from the specified session the first time the gear is
+       run.
+
+    1) Initialize a "blank" test with no data or config.json. You will have
+       to put BIDS data into "work/bids" and create config.json yourself.
 
     2) Copy an existing test (using hard links so it won't take up much
        extra space).  This will copy all of the files so yo will have to
@@ -116,10 +121,14 @@ if __name__ == '__main__':
     ans = get_user_input(msg,"Which would you like to do?",['','1','2','3','4','5'])
     # print()
 
-    if ans == '1': # init
+    if ans == '0': # init using manifest
         test_name = init_test_directory()
         init_test_subdirs(test_name)
         init_test_config(test_name)
+
+    if ans == '1': # blank init
+        test_name = init_test_directory()
+        init_test_subdirs(test_name)
 
     elif ans == '2': # Copy an existing test
         init_by_copying()

@@ -20,9 +20,9 @@ def init_test_directory():
     test_dir = TEST + 'tests/' + test_name
     if not os.path.exists(test_dir):
         os.mkdir(test_dir)
-        # maybe it would be a good idea to ignore that test?
-        # with open(TEST + 'tests/.gitignore', 'a') as gf:
-        #     gf.write(test_name+'\n')
+        # All tests in the tests/ directory are ignored by git except
+        # for test/ (and the .gitignore file so that they will not
+        # be accidentally pushed to the bids-app-template-test repo.
         msg = 'Created directory:\n  ' + test_dir
         print(msg)
         LOG.info(msg)
