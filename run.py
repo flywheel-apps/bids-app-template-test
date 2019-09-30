@@ -52,15 +52,11 @@ def main(test):
 
     command = [ w for w in cmd.split() ]
 
-    if args.shell:
-        result = sp.run(command)
-    else:
-        result = sp.run(command,stdout=sp.PIPE, stderr=sp.PIPE,
-                        universal_newlines=True)
+    result = sp.run(command)
 
     if verbose:
         print(f'{cmd.split()[:2]} return code: '+str(result.returncode))
-        print('output: ',result.stdout)
+        print('output: \n' + str(result.stdout))
 
     log_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")+'_log.txt'
     LOG.info('Saving output to '+TEST+'tests/'+test+'/logs/'+log_name)
