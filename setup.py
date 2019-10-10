@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
     0) Recommended: Initialize a test and create config.json by entering a
        Flywheel api key, destination id and type.  The defaults in manifest.json
-       file are used to create config.json so it must  already exist.  BIDS data
+       file are used to create config.json so it must already exist.  BIDS data
        will be downloaded from the specified session the first time the gear is
        run.
 
