@@ -32,7 +32,7 @@ Clone this testing template in the directory above the new bids-app (so the two 
 
 ```git clone git@github.com:flywheel-apps/bids-app-template-test.git  bids-app-test```
 
-where the `bids-app` part of `bids-app-test` is the name of the new gear you created on GitHub.  The reason for this naming scheme is that the scripts in the test environment will look for the new gear at the same directory level but without the "-test" part.  
+where the `bids-app` part of `bids-app-test` is the name of the new gear you created on GitHub.  The reason for this naming scheme is that the scripts in the test environment will look for the new gear at the same directory level but without the "-test" part in the name.  
 
 Then create a new branch for editing the test repository:
 ```
@@ -51,13 +51,13 @@ The `setup.py` command clones the `flywheel-apps/bids-app-template` repository f
 
 `Dockerfile   manifest.json   run.py   utils/`
 
-The `setup.py` command uses the name you gave to the directory "bids-app-test" to substitute the new gear’s actual name inside `Dockerfile` and `manifest.json` as it copies them.  The command also gives you a chance to set up a test configuration but you should probably do that later, after the `manifest.json` file is edited.  The gear is initialized the first time you run `setup.py`.  You can run `setup.py` as many times as you like to add additional test configurations.  For now, after running `setup.py`, choose option 5) (or press return) to skip setting up tests which will be described below.
+The `setup.py` command uses the name you gave to the directory "bids-app-test" to substitute the new gear’s actual name inside `Dockerfile` and `manifest.json` as it copies them.  The command also gives you a chance to set up a test configuration but you should probably do that later, after the `manifest.json` file is edited.  The gear is initialized the first time you run `setup.py`.  You can run `setup.py` as many times as you like to add additional test configurations.  For now, after running `setup.py`, choose the last option (or press return) to skip setting up tests which will be described below.
 
 ## How things work
 
 ### Building gears
 
-Now that you have two directories: the new gear itself and a “-test” directory.  It's time for the real software development to begin.  See [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Building-Gears) information on the gear specification and what needs to be in each of the files:
+Now you have two directories: the new gear itself and a “-test” directory.  It's time for the real software development to begin.  See [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Building-Gears) information on the gear specification and what needs to be in each of the files:
   * manifest.json
   * Dockerfile
   * run.py
@@ -79,7 +79,7 @@ vim run.py
 ../bids-app-test/run.py
 ```
 
-Note that the last command assumes that you have already set up the "default" test, but you probably have not done that yet.  It's a good idea to first edit the `Docker`, `manifest.json`, and `run.py` files, and then use `setup.py` to create the "default" test.  This is because running the gear requires a `config.json` file and `setup` can use `manifest.json` to create it.  More on this later.
+Note that the last command assumes that you have already set up the "default" test, but you probably have not done that yet.  It's a good idea to first edit the `Dockerfile`, `manifest.json`, and `run.py` files, and then use `setup.py` to create the "default" test.  This is because running the gear requires a `config.json` file and `setup` can use `manifest.json` to create it.  More on this later.
 
 ### Testing gears
 
@@ -88,9 +88,9 @@ Note that the last command assumes that you have already set up the "default" te
 ```config.json input/ output/ src/ test_files/ work/```
 
 All of these items will be mounted inside the running Docker container by the `run.py` script _except_ `test_files/`.
-The idea here is that testing your bids-gear may require some initialization before running the gear and some clean-up afterwards.  In the `src/` directory you'll fine two code stubs, `start.py` and `finish.py` to do the set-up and clean-up.  These are called by the `bids-app-test/run.py` script (not the `run.py` in the gear itself) and all of this takes place _outside_ the container in preparation for the test.  Because of this, the `test_files/` directory can be used to hold files that, for instance, need to be copied into the `input/` directory before the test by `start.py`.  Then the gear is run.  `test_files/` can also hold files that, for instance, can be compared with results in the `output/` directory after the gear is run.  So `bids-app-test/run.py` first calls `start.py`, then it runs the gear by calling `Docker run ...`, and finally it calls `finish.py`.
+The idea here is that testing your bids-gear may require some initialization before running the gear and some clean-up afterwards.  In the `src/` directory you'll fine two code stubs, `start.py` and `finish.py` to do the set-up and clean-up.  These are called by the `bids-app-test/run.py` script (not the `run.py` in the gear itself) and all of this takes place _outside_ the container in preparation for the test.  Because of this, the `test_files/` directory can be used to hold files that, for instance, need to be copied into the `input/` directory before the test by `start.py`.  Then the gear is run.  `test_files/` can also hold files that, for instance, can be compared with results in the `output/` directory after the gear is run.  So `bids-app-test/run.py` first calls `start.py`, then it runs the gear by calling `docker run ...`, and finally it calls `finish.py`.
 
-The reason for this `start` `run` `finish` scheme is so multiple different tests can be run one after the other and each one will set up and clean up after itself.  
+The reason for this `start` `run` `finish` sequence is so multiple different tests can be run one after the other and each one will set up and clean up after itself.  
 
 That's nice, but it assumes a lot of development has already occured and the project is fairly mature.  What about finding out what's going on _inside_ the container?  You'll probably need to do some initial debugging in there by running the gear's `run.py` script from the shell.  To do this, use the `--shell` option when running a test:
 
@@ -98,44 +98,49 @@ That's nice, but it assumes a lot of development has already occured and the pro
 
 Instead of actually running the gear by calling `/flywheel/v0/run.py` it will set the Docker entry point to `/bin/bash`.  Moreover, after running the Docker container in one window you can open another window and edit `bids-app/run.py` in that second window while running it inside the container in the first window with `./src/run.py` as opposed to the normal `./run.py` in the running container.  The trick here is that the gear directory `bids-app/` is mounted inside the container as `src/`.  But `src/` is only there for the test and does not besmirch the gear itself so the gear can be pushed to GitHub or uploaded to a Flywheel instance without worrying about extra cruft going along with it.
 
-If you want to use PyCharm to debug from inside the container, `bids-app-test/run.py` prints out the `docker run ...` command so you can copy and paste all of those `-v` volumes into the configuration and you'll be in the same testing environment.
+If you want to use PyCharm to debug from inside the running container, `bids-app-test/run.py` prints out the `docker run ...` command so you can copy and paste all of those `-v` volumes into the configuration and you'll be in the same testing environment.
 
 ## Edit gear files
 
-Now that you know how things generally work, it's time to edit `Docker`, `manifest.json`, and `run.py` and also the utility scripts in `bids-gear/utils/` as necessary.  The scripts in `utils/` provide functionality that help with BIDS-App gears.  For example, `download()` in `utils/bids.py` is used to download data in BIDS format from a flywheel instance (given the proper settings in the gears `config.json`.  It has a nice feature for debugging: if the BIDS data has already been downloaded, it won't download it again.  That will save a lot of time.  When you edit `bids-gear/run.py`, search for the string "editme".  This will provide help in configuring `run.py` to run your gear and also indicate the optional features (like running bids-validator before running the main code). 
+Now that you know how things generally work, it's time to edit `Dockerfile`, `manifest.json`, and `run.py` and also the utility scripts in `bids-gear/utils/` as necessary.  The scripts in `utils/` provide functionality that help with BIDS-App gears.  For example, `download()` in `utils/bids.py` is used to download data in BIDS format from a flywheel instance (given the proper settings in the gears `config.json`.  It has a nice feature for debugging: if the BIDS data has already been downloaded, it won't download it again.  That will save a lot of time.  When you edit `bids-gear/run.py` and `bids-gear/utils/*.py`, search for the string "editme".  This string marks places in the python files that must be edited and also indicates optional features (like running bids-validator before running the main code). 
 
-After you're done editing `Dockerfile`, run `bids-app-test/build.py` to build the Docker container.
-
-Remember to run `build.py` whenever you modify the `run.py` or `utils/` scripts.  When you are done editing `run.py`, you'll need some test data to debug the gear.
+Each time you edit `Dockerfile`, `manifest.json`, or any python file, run `bids-app-test/build.py` to re-build the Docker container.  When you are done editing, you'll need some test data to debug the gear.
 
 ## Set up tests with BIDS data
 
-Run `setup.py` and it will ask which option you how to create a test:
+Run `setup.py` and it will ask which way you want to create a test:
 
 ```
 Now you can set up a new test in one of the following ways:
 
-    1) Initialize a test and create config.json by providing a Flywheel api
-       key, destination id and type.  BIDS data will be downloaded from the
-       specified session the first time the gear is run.
-     
+    0) Recommended: Initialize a test and create config.json by entering a
+       Flywheel api key, destination id and type.  The defaults in manifest.json
+       file are used to create config.json so it must  already exist.  BIDS data
+       will be downloaded from the specified session the first time the gear is
+       run.
+
+    1) Initialize a "blank" test with no data or config.json. You will have
+       to put BIDS data into "work/bids" and create config.json yourself.
+
     2) Copy an existing test (using hard links so it won't take up much
-       extra space)
-    
+       extra space).  This will copy all of the files so yo will have to
+       delete the ones you do not want to keep.
+       Note: this will give errors if DataLad was used to grab the
+       data: it will complain about the files that are missing
+       (because only one subject was actually downloaded).
+
     3) Download test data and config files from a Flywheel instance
-    
+
     4) Download test data using DataLad (https://www.datalad.org/)
 
     5) Skip this for now (default).  You can run setup.py any time to add
        another test.
-    
-Which would you like to do? [1,2,3,4,5] 
+
+Which would you like to do? [0, 1,2,3,4,5] 
 ```
 
-When running the gear for real on a Flywheel instance, it will download BIDS formatted data every time.  As mentioned eaerlier, `utils/bids.py` won't download data if it is already there.  This allows you to modify the data for a test and it won't be overwritten.  Using option 2) of `setup.py` will allow you to take a good set of data and modify it (being careful to consider the hard links) so that you can create tests for broken BIDS data.
+When running the gear for real on a Flywheel instance, it will download BIDS formatted data every time.  As mentioned eaerlier, `utils/bids.py` won't download data if it is already there.  This allows you to modify the data for a test and it won't be overwritten.  Using option 3) of `setup.py` will allow you to take a good set of data and modify it (being careful to consider the hard links) so that you can create tests for broken BIDS data.
 
 Now that you have test data, you'll iterate editing, building and running.  As you do, `bids-app-test/run.py` sets up logging into the test's `log/` directory (e.g. `bids-app-test/tests/default/logs`).  Logging output produced by `bids-app-test/run.py` (i.e. running the test) will go there along with logging output from the gear itself.
 
-If you don't touch the `Dockerfile`, `manifest.json`, and `run.py` files at all, if you use `setup.py` to initialize a test and can get a proper `config.json` set up and some BIDS formatted data in `work/bids/`, the template BIDS gear should work in that it will run the UNIX `echo` commands to echo the arguments given in the `config.json` file.  It will also validate the BIDS data (see output in the log and also in `work/validator.output.txt`, create a directory to save temporary output in called `work/<session name>`, and put two output files in the `output/` directory: "bids_tree.html" and "bids_tree.html.zip" which are output of the `tree` command that show the file tree of the BIDS data (the .zip file is a way to show the HTML output on a Flywheel viewer, the .html file can to be downloaded to view locally).
-
-As you develop new best practices for developing BIDS-App gears, be sure to add them both here and also in [bids-app-template](https://github.com/flywheel-apps/bids-app-template).
+As you develop new best practices for developing BIDS-App gears, be sure to submit pull requests both here and also in [bids-app-template](https://github.com/flywheel-apps/bids-app-template).
