@@ -13,12 +13,10 @@ import argparse
 
 from utils.find_gear import *
 
-verbose = True
-
 def main(test):
     """ Runs gear with the given test files """
 
-    if verbose:
+    if args.verbose:
         print('Running test "' + test + '"')
 
     if not os.path.exists(TEST + 'tests/' + test):
@@ -47,22 +45,28 @@ def main(test):
          '-v '+GEAR+':'+FLY0+'src '+\
         f'{MANIFEST["custom"]["docker-image"]}'
 
-    if verbose:
+    if args.verbose:
         print('Command:\n\n'+cmd+'\n')
 
     command = [ w for w in cmd.split() ]
 
-    result = sp.run(command)
+    if args.capture_output:
+        result = sp.run(command,stdout=sp.PIPE,stderr=sp.STDOUT,
+                        universal_newlines=True)
+    else:
+        result = sp.run(command)
 
-    if verbose:
+    if args.verbose:
         print(f'{cmd.split()[:2]} return code: '+str(result.returncode))
         print('output: \n' + str(result.stdout))
 
-    log_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")+'_log.txt'
-    LOG.info('Saving output to '+TEST+'tests/'+test+'/logs/'+log_name)
-    if result.stdout:
-        with open(TEST+'tests/'+test+'/logs/'+log_name,'w') as f:
-            f.write(result.stdout)
+    if args.capture_output:
+        log_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")+\
+                   '_log.txt'
+        LOG.info('Saving output to '+TEST+'tests/'+test+'/logs/'+log_name)
+        if result.stdout:
+            with open(TEST+'tests/'+test+'/logs/'+log_name,'w') as f:
+                f.write(str(result.stdout))
 
     # Run any desired cleanup for this test
     print('Running '+('tests/' + test + '/src/finish').replace('/','.'))
@@ -79,6 +83,10 @@ if __name__ == '__main__':
                         help="the test in tests/ to run.  'all' runs all tests.")
     parser.add_argument("-s", "--shell", action="store_true",
                         help="run bash in the container instead of run.py.")
+    parser.add_argument("-c", "--capture-output", action="store_true",
+                        help="Capture output and save in log file.")
+    parser.add_argument("-v", "--verbose", action="store_true",
+                        help="Print what is going on.")
     args = parser.parse_args()
 
     if args.test == '': # no arguments, run default

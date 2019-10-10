@@ -18,7 +18,7 @@
         "verbose": "v",
         "write-graph": false,
         "gear-abort-on-bids-error": false,
-        "gear-log-level": "INFO",
+        "gear-log-level": "DEBUG",
         "gear-run-bids-validation": true,
         "gear-save-all-output": false,
     	"gear-dry-run": false,

@@ -79,7 +79,7 @@ if __name__ == '__main__':
                         if TESTING == 'basic': # unless this is a test
                             o.write(line)
                             o.write('RUN chmod a+x ${FLYWHEEL}/test.sh') 
-                    elif "['command'] = ['echo']" in line:
+                    elif "command = ['echo']" in line:
                         if TESTING == 'basic': # if this is a test
                             # have run.py run the test instead of echo
                             o.write("        command = ['./test.sh']")

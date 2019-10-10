@@ -66,7 +66,7 @@ TESTING = ''
 if NAME == 'bids-app-template': # then test the template inside 'gear'
     old_gear = GEAR
     GEAR = TEST+'tests/test/gear'
-    msg = 'Testing: GEAR changed from "'+old_gear+'" to "'+GEAR+'"\n'
+    msg = '\nTesting: GEAR changed from "'+old_gear+'" to "'+GEAR+'"\n'
     print(msg)
     LOG.info(msg)
 
