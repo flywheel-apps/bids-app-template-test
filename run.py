@@ -21,7 +21,7 @@ def main(test):
 
     if not os.path.exists(TEST + 'tests/' + test):
         print('Sorry, the test "' + test + '" does not exist.  ' + 
-              'Create one using ./setup.py)
+              'Create one using ./setup.py')
         exit(-1)
 
     if not os.path.isfile(TEST + 'tests/' + test + '/config.json'):
