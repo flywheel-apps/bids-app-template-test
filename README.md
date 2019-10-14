@@ -1,11 +1,19 @@
 # bids-app-template-test
-Test environment for bids-app-template
+Test environment for `[bids-app-template](https://github.com/flywheel-apps/bids-app-template)`.
 
 To create a bids-app gear, *do not* just clone this repository in the usual way, please follow these steps.
 
+Beyond initializing a new gear using `bids-app-template`, the objective of these two templates is to set up for building, running and testing that gear.  Community improvements will evolve best practices so gear development and execution will be efficient and effective.  Additional goals include:
+
+* detecting problems early to prevent the gear from running if it will fail,
+* giving clear error and warning messages that describe the problem _and_ point to the code where the issue was detected,
+* being a place to hold excellent code snippets and flywheel platform tricks.
+
+Before following the steps below, you should be familiar with [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Building-Gears).  These templates were initially developed for gears that expect data to be in BIDS format, but any gear can get a great start here.  
+
 ## Identify BIDS compatible open source code
 
-* See https://github.com/BIDS-Apps.  Maybe what you want is already there.
+* See https://github.com/BIDS-Apps.  If what you want is already there, your work is well on its way.
 * Note the open source license.  It needs to be commercially friendly.
 
 ## Create GitHub Project
