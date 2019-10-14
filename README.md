@@ -159,6 +159,6 @@ Which would you like to do? [0, 1,2,3,4,5]
 
 When running the gear for real on a Flywheel instance, it will download BIDS formatted data every time.  As mentioned eaerlier, `utils/bids.py` won't download data if it is already there.  This allows you to modify the data for a test and it won't be overwritten.  Using option 3) of `setup.py` will allow you to take a good set of data and modify it (being careful to consider the hard links) so that you can create tests for broken BIDS data.
 
-Now that you have test data, you'll iterate editing, building and running.
+Now that you have test data, you'll iterate editing, building and running.  After the gear runs locally, put it on a Flywheel platform by running `fw gear upload` in the gear's directory.  To be sure that the proper python interpreter is used to execute the gear's `run.py`, set the `PATH` environment variable in `manifest.json`.
 
 As you develop new best practices for developing BIDS-App gears, be sure to submit pull requests both here and also in [bids-app-template](https://github.com/flywheel-apps/bids-app-template).
