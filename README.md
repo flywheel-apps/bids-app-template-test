@@ -110,7 +110,7 @@ The idea here is that testing your bids-gear may require some initialization bef
 
 The reason for this `start` `run` `finish` sequence is so multiple different tests can be run one after the other and each one will set up and clean up after itself.  
 
-That's nice, but it assumes a lot of development has already occured and the project is fairly mature.  What about finding out what's going on _inside_ the container?  You'll probably need to do some initial debugging in there by running the gear's `run.py` script from the shell.  To do this, use the `--shell` option when running a test:
+That's nice, but it assumes a lot of development has already occurred and the project is fairly mature.  What about finding out what's going on _inside_ the container?  You'll probably need to do some initial debugging in there by running the gear's `run.py` script from the shell.  To do this, use the `--shell` option when running a test:
 
 ```bids-app-test/run.py -s```
 
@@ -120,7 +120,7 @@ If you want to use PyCharm to debug from inside the running container, `bids-app
 
 ## Edit gear files
 
-Now that you know how things generally work, it's time to edit `Dockerfile`, `manifest.json`, and `run.py` and also the utility scripts in `utils/` as necessary.  The scripts in the subdirectories of `utils/` provide functionality that help with BIDS-App gears.  For example, `download_bids()` in `utils/bids/download_bids.py` is used to download data in BIDS format from a flywheel instance (given the proper settings in `config.json`).  This function has a nice feature for debugging: if the BIDS data has already been downloaded, it won't download it again.  That will save a lot of time.  When you edit `bids-gear/run.py` and `bids-gear/utils/args.py`, search for the string "editme".  This string marks places in the python code that must be edited and also indicates optional features (like running bids-validator before running the main code). Ideally, you won't have to edit the python modules in `utils/*/*.py` because they are established methods for getting things done.  But if you do need edit them or if you've found a better way to do it, please consider creating a pull request to share with the community.  You can delete any subdirctory module that you don't call.
+Now that you know how things generally work, it's time to edit `Dockerfile`, `manifest.json`, and `run.py` and also the utility scripts in `utils/` as necessary.  The scripts in the subdirectories of `utils/` provide functionality that help with BIDS-App gears.  For example, `download_bids()` in `utils/bids/download_bids.py` is used to download data in BIDS format from a flywheel instance (given the proper settings in `config.json`).  This function has a nice feature for debugging: if the BIDS data has already been downloaded, it won't download it again.  That will save a lot of time.  When you edit `bids-gear/run.py` and `bids-gear/utils/args.py`, search for the string "editme".  This string marks places in the python code that must be edited and also indicates optional features (like running bids-validator before running the main code). Ideally, you won't have to edit the python modules in `utils/*/*.py` because they are established methods for getting things done.  But if you do need edit them or if you've found a better way to do it, please consider creating a pull request to share with the community.  You can delete any subdirectory module that you don't call.
 
 Each time you edit `Dockerfile`, `manifest.json`, or any python file, run `bids-app-test/build.py` to re-build the Docker container.  When you are done editing, you'll need some test data to debug the gear.
 
@@ -157,7 +157,7 @@ Now you can set up a new test in one of the following ways:
 Which would you like to do? [0, 1,2,3,4,5] 
 ```
 
-When running the gear for real on a Flywheel instance, it will download BIDS formatted data every time.  As mentioned eaerlier, `utils/bids.py` won't download data if it is already there.  This allows you to modify the data for a test and it won't be overwritten.  Using option 2) of `setup.py` will allow you to take a good set of data and modify it (being careful to consider the hard links) so that you can create tests for broken BIDS data.
+When running the gear for real on a Flywheel instance, it will download BIDS formatted data every time.  As mentioned earlier, `utils/bids.py` won't download data if it is already there.  This allows you to modify the data for a test and it won't be overwritten.  Using option 2) of `setup.py` will allow you to take a good set of data and modify it (being careful to consider the hard links) so that you can create tests for broken BIDS data.
 
 Now that you have test data, you'll iterate editing, building and running.  After the gear runs locally, put it on a Flywheel platform by running `fw gear upload` in the gear's directory.  To be sure that the proper python interpreter is used on the platform to execute the gear's `run.py`, set the `PATH` environment variable in `manifest.json`.
 
