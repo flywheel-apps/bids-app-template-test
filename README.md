@@ -11,6 +11,16 @@ Beyond initializing a new gear using `bids-app-template`, the objective of these
 
 Before following the steps below, you should be familiar with [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Building-Gears).  These templates were initially developed for gears that expect data to be in BIDS format, but any gear can get a great start here.  
 
+## Overview of steps:
+
+- Create a GitHub project and clone it locally
+- Clone this test repository using your new gear name plus "-test"
+- Run `setup.py` to initialize your new gear
+- Edit the gear's python scripts, `manifest.json`, and `Dockerfile`
+- Run `setup.py` again to set up tests with data
+- Run `build.py` to build the gear from the Dockerfile
+- Run `run.py` to run the gear in using test data.
+
 ## Identify BIDS compatible open source code
 
 * See https://github.com/BIDS-Apps.  If what you want is already there, your work is well on its way.
@@ -70,7 +80,7 @@ Now you have two directories: the new gear itself and a “-test” directory.  
   * Dockerfile
   * run.py
 
-The [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Building-Gears) instructions are very general.  The usual `input/` and `output/` folders are available while running in the container, but in addition to that, BIDS-App gears can find BIDS formatted data in the directory `/flywheel/v0/work/bids/` (or just `work/bids/`).
+The [Building Gears](https://docs.flywheel.io/hc/en-us/articles/360015513653-Building-Gears) instructions are very general.  The usual `input/` and `output/` folders are available while running in the container, but in addition to that, BIDS-App gears can find BIDS formatted data in the directory `/flywheel/v0/work/bids/` (or with the relative path `work/bids/` because gears are executed from `/flywheel/v0').
 
 You will be developing and testing the gear locally and can use the helpful commands inside `<your-new-gear-name>-test/`:
 
@@ -78,7 +88,7 @@ You will be developing and testing the gear locally and can use the helpful comm
  * `./build.py` to build the container, and
  * `./run.py` to run the "default" test or `run.py -t testname` to run a test called “testname".
 
-The scripts can be run from anywhere.  For instance, to re-build and then run the Docker container from within the bids-app after editing stuff there:
+The scripts can be run from anywhere.  For instance, to re-build and then run the Docker container from within your new bids-app directory after editing stuff there:
 
 ```
 cd bids-app
