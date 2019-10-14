@@ -1,5 +1,5 @@
 # bids-app-template-test
-Test environment for `[bids-app-template](https://github.com/flywheel-apps/bids-app-template)`.
+Test environment for [bids-app-template](https://github.com/flywheel-apps/bids-app-template).
 
 To create a bids-app gear, *do not* just clone this repository in the usual way, please follow these steps.
 
