@@ -109,7 +109,7 @@ if __name__ == '__main__':
        to put BIDS data into "work/bids" and create config.json yourself.
 
     2) Copy an existing test (using hard links so it won't take up much
-       extra space).  This will copy all of the files so yo will have to
+       extra space).  This will copy all of the files so you will have to
        delete the ones you do not want to keep.
        Note: this will give errors if DataLad was used to grab the
        data: it will complain about the files that are missing
