@@ -23,7 +23,7 @@ def copy(src, dst):
         shutil.rmtree(dst+'/logs')
         os.mkdir(dst+'/logs')
 
-        msg - 'Copied test from\n  ' + src + '\nto\n  ' + dst
+        msg = 'Copied test from\n  ' + src + '\nto\n  ' + dst
         print(msg)
         LOG.info(msg)
 
