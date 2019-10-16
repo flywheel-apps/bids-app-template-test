@@ -28,6 +28,42 @@ use_dev_branch = True
 
 if __name__ == '__main__':
 
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("-a","--api-key",type=str,
+                        help="create config.json and add an api-key")
+    parser.add_argument("-d","--destination",type=str)
+    parser.add_argument("-t","--type",type=str,default="analysis",
+                        help="type of destination")
+    args = parser.parse_args()
+    print(args)
+
+    # create a config.json file if arguments are provided
+    if args.api_key or args.destination:
+        config_json = {}
+
+        if args.api_key:
+            config_json['inputs'] = {}
+            config_json['inputs']['api_key'] = {}
+            config_json['inputs']['api_key']['key'] = args.api_key
+            config_json['inputs']['api_key']['base'] = "api-key"
+            config_json['inputs']['api_key']['read-only'] = "true"
+
+        if args.destination:
+            config_json['destination'] = {}
+            config_json['destination']['type'] = args.type
+            config_json['destination']['id'] = args.destination
+
+        config_path = 'tests/test/config.json'
+        # add the rest of the template to the end
+        with open(TEST + config_path + '.template','r') as config_template:
+            config_json_template = json.load(config_template)
+
+            for k,v in config_json_template.items():
+                config_json[k] = config_json_template[k]
+
+            with open(TEST + config_path, 'w') as outfile:
+                json.dump(config_json, outfile, indent=4)
+
     LOG.info('STATUS is '+STATUS)
 
     msg = 'Starting setup...'

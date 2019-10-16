@@ -1,15 +1,4 @@
 {
-    "inputs": {
-        "api_key": {
-            "key": "hohohohoho",
-            "base": "api-key",
-            "read-only": true
-        }
-    },
-    "destination": {
-        "type": "analysis",
-        "id": "nowhere"
-    },
     "config": {
         "bool-param": false,
         "num-things": 1,
@@ -21,7 +10,7 @@
         "gear-log-level": "DEBUG",
         "gear-run-bids-validation": true,
         "gear-save-all-output": false,
-    	"gear-dry-run": false,
+        "gear-dry-run": false,
         "gear-FREESURFER_LICENSE": "fake fake fake"
     }
 }
