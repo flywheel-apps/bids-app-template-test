@@ -114,11 +114,11 @@ if __name__ == '__main__':
                     if 'COPY test.sh' in line: # don't copy test.sh in Dockerfile
                         if TESTING == 'basic': # unless this is a test
                             o.write(line)
-                            o.write('RUN chmod a+x ${FLYWHEEL}/test.sh') 
-                    elif "command = ['echo']" in line:
+                            o.write('RUN chmod a+x ${FLYWHEEL}/test.sh\n') 
+                    elif "echo" in line:
                         if TESTING == 'basic': # if this is a test
                             # have run.py run the test instead of echo
-                            o.write("        command = ['./test.sh']")
+                            o.write("        command = ['./test.sh']\n")
                         else:
                             o.write(line)
                     else:
