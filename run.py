@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-""" bids-app-template-test run.py
-This test runs the "default" test or the given tests.  Test names are the
-directory names in bids-app-template-test/tests/.
+"""
+This runs the "default" test or the given tests.  Test names are the
+directory names in ./tests/
 """
 
 import os
@@ -95,11 +95,15 @@ if __name__ == '__main__':
         main(test)  # run the test for this test template
 
     # check for "run.py all"
-    elif args.test in ['all','All','ALL']:
+    elif args.test[0] in ['all','All','ALL']:
 
         # run each test in the tests directory
         for test in os.listdir(TEST+'tests'):
-            run.main(test)
+            if test != '.gitignore':
+                print('\n\nRunning test "' + test + '"\n')
+                main(test)
+        print('\nDone running all tests.\n')
+
     else:
 
         # before running the given tests, make sure they exist
