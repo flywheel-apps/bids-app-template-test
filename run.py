@@ -38,7 +38,7 @@ def main(test):
     else:
         entry = FLY0+'run.py'
 
-    cmd= 'docker run --rm -ti --entrypoint='+entry+' '+\
+    cmd= 'docker run -ti --name shme --entrypoint='+entry+' '+\
          '-v '+TEST+'tests/'+test+'/input:'+FLY0+'input '+\
          '-v '+TEST+'tests/'+test+'/output:'+FLY0+'output '+\
          '-v '+TEST+'tests/'+test+'/config.json:'+FLY0+'config.json '+\
@@ -46,28 +46,44 @@ def main(test):
          '-v '+GEAR+':'+FLY0+'src '+\
         f'{MANIFEST["custom"]["docker-image"]}'
 
-    if args.verbose:
-        print('Command:\n\n'+cmd+'\n')
+    print('Command:\n\n'+cmd+'\n')
+    print('PYTHONUNBUFFERED is ' + os.environ.get('PYTHONUNBUFFERED','None'))
 
     command = [ w for w in cmd.split() ]
 
-    if args.capture_output:
-        result = sp.run(command,stdout=sp.PIPE,stderr=sp.STDOUT,
-                        universal_newlines=True)
-    else:
-        result = sp.run(command)
+    result = sp.run(command, universal_newlines=True)
 
     if args.verbose:
         print(f'{cmd.split()[:2]} return code: '+str(result.returncode))
         print('output: \n' + str(result.stdout))
 
-    if args.capture_output:
-        log_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")+\
-                   '_log.txt'
-        LOG.info('Saving output to '+TEST+'tests/'+test+'/logs/'+log_name)
-        if result.stdout:
-            with open(TEST+'tests/'+test+'/logs/'+log_name,'w') as f:
-                f.write(str(result.stdout))
+    # save log
+    log_path = TEST+'tests/'+test+'/logs/'
+    log_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")+\
+               '_log.txt'
+    msg = 'Logging output to ' + log_path + log_name
+    print(msg)
+    LOG.info(msg)
+    
+    cmd = 'docker logs shme > ' + log_path + log_name
+    print('running "' + cmd + '"')
+    result = sp.run(cmd, universal_newlines=True, shell=True)
+    if args.verbose:
+        print(f'{cmd.split()[:2]} return code: '+str(result.returncode))
+        print('output: \n' + str(result.stdout))
+
+    # remove the container
+    if args.dontrm:
+        LOG.info('NOT removing container')
+    else:
+        LOG.info('Removing container')
+        cmd = 'docker rm shme'
+        print('running "' + cmd + '"')
+        command = [ w for w in cmd.split() ]
+        result = sp.run(command, universal_newlines=True)
+        if args.verbose:
+            print(f'{cmd.split()[:2]} return code: '+str(result.returncode))
+            print('output: \n' + str(result.stdout))
 
     # Run any desired cleanup for this test
     print('Running '+('tests/' + test + '/src/finish').replace('/','.'))
@@ -84,8 +100,8 @@ if __name__ == '__main__':
                         help="the test in tests/ to run.  'all' runs all tests.")
     parser.add_argument("-s", "--shell", action="store_true",
                         help="run bash in the container instead of run.py.")
-    parser.add_argument("-c", "--capture-output", action="store_true",
-                        help="Capture output and save in log file.")
+    parser.add_argument("-d", "--dontrm", action="store_true",
+                        help="don't remove the container after logging.")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Print what is going on.")
     args = parser.parse_args()
