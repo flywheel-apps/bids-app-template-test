@@ -19,7 +19,7 @@ Before following the steps below, you should be familiar with [Building Gears](h
 - Edit the gear's python scripts, `manifest.json`, and `Dockerfile`
 - Run `setup.py` again to set up tests with data
 - Run `build.py` to build the gear from the Dockerfile
-- Run `run.py` to run the gear in using test data.
+- Run `run_tests.py` to run the gear in using test data.
 
 ## Identify BIDS compatible open source code
 
@@ -89,7 +89,7 @@ You will be developing and testing the gear locally and can use the helpful comm
 
  * `./setup.py` to create a new test configuration,
  * `./build.py` to build the container, and
- * `./run.py` to run the "default" test or `run.py -t testname` to run a test called “testname".
+ * `./run_tests.py` to run the "default" test or `run_tests.py -t testname` to run a test called “testname".
 
 The scripts can be run from anywhere.  For instance, to re-build and then run the Docker container from within your new bids-app directory after editing stuff there:
 
@@ -97,7 +97,7 @@ The scripts can be run from anywhere.  For instance, to re-build and then run th
 cd bids-app
 vim run.py
 ../bids-app-test/build.py
-../bids-app-test/run.py
+../bids-app-test/run\_tests.py
 ```
 
 Note that the last command assumes that you have already set up the "default" test, but you probably have not done that yet.  It's a good idea to first edit the `Dockerfile`, `manifest.json`, and `run.py` files, and then use `setup.py` to create the "default" test.  This is because running the gear requires a `config.json` file and `setup` can use `manifest.json` to create it.  More on this later.
@@ -108,18 +108,18 @@ Note that the last command assumes that you have already set up the "default" te
 
 ```config.json input/ output/ src/ test_files/ work/```
 
-All of these items will be mounted inside the running Docker container by the `run.py` script _except_ `test_files/`.
-The idea here is that testing your bids-gear may require some initialization before running the gear and some clean-up afterwards.  In the `src/` directory you'll fine two code stubs, `start.py` and `finish.py` to do the set-up and clean-up.  These are called by the `bids-app-test/run.py` script (not the `run.py` in the gear itself) and all of this takes place _outside_ the container in preparation for the test.  Because of this, the `test_files/` directory can be used to hold files that, for instance, need to be copied into the `input/` directory before the test by `start.py`.  Then the gear is run.  `test_files/` can also hold files that, for instance, can be compared with results in the `output/` directory after the gear is run.  So `bids-app-test/run.py` first calls `start.py`, then it runs the gear by calling `docker run ...`, and finally it calls `finish.py`.
+All of these items will be mounted inside the running Docker container by the `run_tests.py` script _except_ `test_files/`.
+The idea here is that testing your bids-gear may require some initialization before running the gear and some clean-up afterwards.  In the `src/` directory you'll fine two code stubs, `start.py` and `finish.py` to do the set-up and clean-up.  These are called by the `bids-app-test/run_tests.py` script and all of this takes place _outside_ the container in preparation for the test.  Because of this, the `test_files/` directory can be used to hold files that, for instance, need to be copied into the `input/` directory before the test by `start.py`.  Then the gear is run.  `test_files/` can also hold files that, for instance, can be compared with results in the `output/` directory after the gear is run.  So `bids-app-test/run_tests.py` first calls `start.py`, then it runs the gear by calling `docker run ...`, and finally it calls `finish.py`.
 
 The reason for this `start` `run` `finish` sequence is so multiple different tests can be run one after the other and each one will set up and clean up after itself.  
 
 That's nice, but it assumes a lot of development has already occurred and the project is fairly mature.  What about finding out what's going on _inside_ the container?  You'll probably need to do some initial debugging in there by running the gear's `run.py` script from the shell.  To do this, use the `--shell` option when running a test:
 
-```bids-app-test/run.py -s```
+```bids-app-test/run_tests.py -s```
 
 Instead of actually running the gear by calling `/flywheel/v0/run.py` it will set the Docker entry point to `/bin/bash`.  Moreover, after running the Docker container in one window you can open another window and edit `bids-app/run.py` in that second window while running it inside the container in the first window with `./src/run.py` as opposed to the normal `./run.py` in the running container.  The trick here is that the gear directory `bids-app/` is mounted inside the container as `src/`.  But `src/` is only there for the test and does not besmirch the gear itself so the gear can be pushed to GitHub or uploaded to a Flywheel instance without worrying about extra cruft going along with it.
 
-If you want to use PyCharm to debug from inside the running container, `bids-app-test/run.py` prints out the `docker run ...` command so you can copy and paste all of those `-v` volumes into the configuration and you'll be in the same testing environment.
+If you want to use PyCharm to debug from inside the running container, `bids-app-test/run_tests.py` prints out the `docker run ...` command so you can copy and paste all of those `-v` volumes into the configuration and you'll be in the same testing environment.
 
 ## Edit gear files
 
@@ -164,10 +164,10 @@ When running the gear for real on a Flywheel instance, it will download BIDS for
 
 ## Logging
 
-The actions of `setup.py`, `build.py`, and `run.py` will be logged in "bids-app-test/tests/test/logs/init_log.txt".  Logs of running the tests you create will be placed in the "logs" directory for the test.  For example, the logs for the th test named "default" will be saved like "tests/default/logs/2019-09-30_15-49-35_log.txt".
+The actions of `setup.py`, `build.py`, and `run_tests.py` will be logged in "bids-app-test/tests/test/logs/init_log.txt".  Logs of running the tests you create will be placed in the "logs" directory for the test.  For example, the logs for the th test named "default" will be saved like "tests/default/logs/2019-09-30_15-49-35_log.txt".
 
 ## Next steps
 
-Now that you have test data, you'll iterate editing, building and running.  After the gear runs locally, put it on a Flywheel platform by running `fw gear upload` in the gear's directory.  To be sure that the proper python interpreter is used on the platform to execute the gear's `run.py`, set the `PATH` environment variable in `manifest.json`.  In the running gear (use `./run.py -s`) `echo $PATH` will provide the information to paste into the manifest file.
+Now that you have test data, you'll iterate editing, building and running.  After the gear runs locally, put it on a Flywheel platform by running `fw gear upload` in the gear's directory.  To be sure that the proper python interpreter is used on the platform to execute the gear's `run.py`, set the `PATH` environment variable in `manifest.json`.  In the running gear (use `./run_tests.py -s`) `echo $PATH` will provide the information to paste into the manifest file.
 
 As you develop new best practices for developing BIDS-App gears, be consider submitting pull requests both here and also in [bids-app-template](https://github.com/flywheel-apps/bids-app-template).
