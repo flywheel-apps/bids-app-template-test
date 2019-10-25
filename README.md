@@ -44,6 +44,9 @@ git push -u origin dev
 cd ..
 ```
 
+At this point you'll have 3 files in your local gear directory: `.gitignore`, `LICENSE`, and `README.md`, and you have a "dev" branch locally and on GitHub.
+If you don't want to create a GitHub repository, you can just create a directory with your new bids-app name.
+
 ## Clone this repository using a different name
 
 Clone this testing template in the directory above the new bids-app (so the two will be in the same directory) and be sure to use the name of the new gear repository created above **with “-test” appended** to the end.  For example, run:
@@ -158,6 +161,12 @@ Which would you like to do? [0, 1,2,3,4,5]
 ```
 
 When running the gear for real on a Flywheel instance, it will download BIDS formatted data every time.  As mentioned earlier, `utils/bids.py` won't download data if it is already there.  This allows you to modify the data for a test and it won't be overwritten.  Using option 2) of `setup.py` will allow you to take a good set of data and modify it (being careful to consider the hard links) so that you can create tests for broken BIDS data.
+
+## Logging
+
+The actions of setup.py, build.py, and run.py will be logged in "bids-app-test/tests/test/logs/init_log.txt".  Logs of the tests you create will be placed in the "logs" directory for the test, e.g. "tests/default/logs/2019-09-30_15-49-35_log.txt".
+
+## Next steps
 
 Now that you have test data, you'll iterate editing, building and running.  After the gear runs locally, put it on a Flywheel platform by running `fw gear upload` in the gear's directory.  To be sure that the proper python interpreter is used on the platform to execute the gear's `run.py`, set the `PATH` environment variable in `manifest.json`.  In the running gear (use `./run.py -s`) `echo $PATH` will provide the information to paste into the manifest file.
 
