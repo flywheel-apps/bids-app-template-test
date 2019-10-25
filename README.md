@@ -164,7 +164,7 @@ When running the gear for real on a Flywheel instance, it will download BIDS for
 
 ## Logging
 
-The actions of `setup.py`, `build.py`, and `run.py` will be logged in "bids-app-test/tests/test/logs/init_log.txt".  Logs of running the tests you create will be placed in the "logs" directory for the test.  For example, the logs for the thest named "default" will be like "tests/default/logs/2019-09-30_15-49-35_log.txt".
+The actions of `setup.py`, `build.py`, and `run.py` will be logged in "bids-app-test/tests/test/logs/init_log.txt".  Logs of running the tests you create will be placed in the "logs" directory for the test.  For example, the logs for the th test named "default" will be saved like "tests/default/logs/2019-09-30_15-49-35_log.txt".
 
 ## Next steps
 
