@@ -171,7 +171,7 @@ The actions of `setup.py`, `build.py`, and `run_tests.py` will be logged in "bid
 Now that you have test data, you'll iterate editing, building and running tests.  Here is what your files might look like:
 
 ```
-├── bids-app
+├── *bids-app*
 │   ├── Dockerfile
 │   ├── manifest.json
 │   ├── run.py
@@ -183,7 +183,7 @@ Now that you have test data, you'll iterate editing, building and running tests.
 │       ├── helpers
 │       ├── licenses
 │       └── results
-└── bids-app-test
+└── *bids-app-test*
     ├── LICENSE
     ├── README.md
     ├── build.py
@@ -191,7 +191,7 @@ Now that you have test data, you'll iterate editing, building and running tests.
     ├── setup.py
     ├── utils
     └── tests
-        ├── default
+        ├── *default*
         │   ├── config.json
         │   ├── input
         │   ├── logs
@@ -202,7 +202,7 @@ Now that you have test data, you'll iterate editing, building and running tests.
         │   │   └── start.py
         │   ├── test_files
         │   └── work
-        ├── test
+        ├── *test*
         │   ├── config.json
         │   ├── README.md
         │   ├── config.json.template
@@ -218,7 +218,7 @@ Now that you have test data, you'll iterate editing, building and running tests.
         │   │   └── start.py
         │   ├── test_files
         │   └── work
-        ├── test-bad-input
+        ├── *test-bad-input*
         │   ├── config.json
         │   ├── input
         │   ├── logs
