@@ -171,7 +171,7 @@ The actions of `setup.py`, `build.py`, and `run_tests.py` will be logged in "bid
 Now that you have test data, you'll iterate editing, building and running tests.  Here is what your files might look like for a gear called `bids-app` where you have created two tests called "default" and "test-bad-input".:
 
 ```
-├── bids-app
+├── bids-app                                      <-- your new gear directory
 │   ├── Dockerfile
 │   ├── manifest.json
 │   ├── run.py
@@ -183,7 +183,7 @@ Now that you have test data, you'll iterate editing, building and running tests.
 │       ├── helpers
 │       ├── licenses
 │       └── results
-└── bids-app-test
+└── bids-app-test                                 <-- test environment for your new gear
     ├── LICENSE
     ├── README.md
     ├── build.py
