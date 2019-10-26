@@ -191,18 +191,18 @@ Now that you have test data, you'll iterate editing, building and running tests.
 	    ├── setup.py
 	    ├── utils
 	    └── tests
-		├── default                                                   <-- the "default" test that you create
+		├── default                                       <-- the "default" test that you create
 		│   ├── config.json
 		│   ├── input
 		│   ├── logs
-		│   │   └── 2019-09-30_15-58-16_log.txt                       <-- a log file from running the "default" test
+		│   │   └── 2019-09-30_15-58-16_log.txt           <-- a log file from running the "default" test
 		│   ├── output
 		│   ├── src
 		│   │   ├── finish.py
 		│   │   └── start.py
 		│   ├── test_files
 		│   └── work
-		├── test                                                      <-- a test for bids-app-template-test
+		├── test                                          <-- a test for bids-app-template-test
 		│   ├── config.json
 		│   ├── README.md
 		│   ├── config.json.template
@@ -211,18 +211,18 @@ Now that you have test data, you'll iterate editing, building and running tests.
 		│   │   └── README.md
 		│   ├── input
 		│   ├── logs
-		│   │   └── init_log.txt                                      <-- a log file from running setup.py, build.py, and run_test.py
+		│   │   └── init_log.txt                          <-- a log file from running setup.py, build.py, and run_test.py
 		│   ├── output
 		│   ├── src
 		│   │   ├── finish.py
 		│   │   └── start.py
 		│   ├── test_files
 		│   └── work
-		├── test-bad-input                                            <-- another test that you create
+		├── test-bad-input                                <-- another test that you create
 		│   ├── config.json
 		│   ├── input
 		│   ├── logs
-		│   │   └── 2019-09-31_15-58-16_log.txt                       <-- a log file from running the "test_bad-input" test
+		│   │   └── 2019-09-31_15-58-16_log.txt           <-- a log file from running the "test_bad-input" test
 		│   ├── output
 		│   ├── src
 		│   │   ├── finish.py
