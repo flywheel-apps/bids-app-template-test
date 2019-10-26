@@ -234,4 +234,4 @@ Now that you have test data, you'll iterate editing, building and running tests.
 
 After the gear runs locally, put it on a Flywheel platform by running `fw gear upload` in the gear's directory.  To be sure that the proper python interpreter is used on the platform to execute the gear's `run.py`, set the `PATH` environment variable in `manifest.json`.  In the running gear (use `./run_tests.py -s`) `echo $PATH` will provide the information to paste into the manifest file.
 
-As you develop new best practices for developing BIDS-App gears, be consider submitting pull requests both here and also in [bids-app-template](https://github.com/flywheel-apps/bids-app-template).
+As you develop new best practices for developing BIDS-App gears, please consider submitting them using pull requests both here and also in [bids-app-template](https://github.com/flywheel-apps/bids-app-template).
