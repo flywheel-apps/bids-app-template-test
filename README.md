@@ -168,68 +168,68 @@ The actions of `setup.py`, `build.py`, and `run_tests.py` will be logged in "bid
 
 ## Next steps
 
-Now that you have test data, you'll iterate editing, building and running tests.  Here is what your files might look like for a gear called `bids-app` where you have created two tests called "default" and "test-bad-input".:
+Now that you have test data, you'll iterate editing, building and running tests.  Here is what your files might look like for a gear called `bids-app` where you have created two tests called "default" and "test-bad-input":
 
 ```
-├── bids-app                                      <-- your new gear directory
+├── bids-app/                                     <-- your new gear directory
 │   ├── Dockerfile
 │   ├── manifest.json
 │   ├── run.py
-│   └── utils
+│   └── utils/
 │       ├── args.py
-│       ├── bids
-│       ├── dicom
-│       ├── fly
-│       ├── helpers
-│       ├── licenses
-│       └── results
-└── bids-app-test                                 <-- test environment for your new gear
+│       ├── bids/
+│       ├── dicom/
+│       ├── fly/
+│       ├── helpers/
+│       ├── licenses/
+│       └── results/
+└── bids-app-test/                                <-- test environment for your new gear
     ├── LICENSE
     ├── README.md
     ├── build.py
     ├── run_tests.py
     ├── setup.py
-    ├── utils
+    ├── utils/
     └── tests
-	├── default                               <-- the "default" test that you create
+	├── default/                              <-- the "default" test that you created
 	│   ├── config.json
-	│   ├── input
-	│   ├── logs
+	│   ├── input/
+	│   ├── logs/
 	│   │   └── 2019-09-30_15-58-16_log.txt   <-- a log file from running the "default" test
-	│   ├── output
-	│   ├── src
+	│   ├── output/
+	│   ├── src/
 	│   │   ├── finish.py
 	│   │   └── start.py
-	│   ├── test_files
-	│   └── work
+	│   ├── test_files/
+	│   └── work/
 	├── test                                  <-- a test for bids-app-template-test
 	│   ├── config.json
 	│   ├── README.md
 	│   ├── config.json.template
-	│   ├── gear
+	│   ├── gear/                             <-- bids-app-template test gear is built here for testing
 	│   │   ├── LICENSE
 	│   │   └── README.md
-	│   ├── input
-	│   ├── logs
+	│   ├── input/
+	│   ├── logs/
 	│   │   └── init_log.txt                  <-- a log file from running setup.py, build.py, and run_test.py
-	│   ├── output
-	│   ├── src
+	│   ├── output/
+	│   ├── src/
 	│   │   ├── finish.py
 	│   │   └── start.py
-	│   ├── test_files
-	│   └── work
-	├── test-bad-input                        <-- another test that you create
+	│   ├── test_files/
+	│   └── work/
+	├── test-bad-input                        <-- another test that you created
 	│   ├── config.json
-	│   ├── input
-	│   ├── logs
+	│   ├── input/
+	│   ├── logs/
 	│   │   └── 2019-09-31_15-58-16_log.txt   <-- a log file from running the "test_bad-input" test
-	│   ├── output
-	│   ├── src
+	│   ├── output/
+	│   ├── src/
 	│   │   ├── finish.py
 	│   │   └── start.py
-	│   ├── test_files
-	│   └── work
-	├── ...
+	│   ├── test_files/
+	│   └── work/
+	├── ...                                   <-- any more tests you have created
 ```
 
 After the gear runs locally, put it on a Flywheel platform by running `fw gear upload` in the gear's directory.  To be sure that the proper python interpreter is used on the platform to execute the gear's `run.py`, set the `PATH` environment variable in `manifest.json`.  In the running gear (use `./run_tests.py -s`) `echo $PATH` will provide the information to paste into the manifest file.
