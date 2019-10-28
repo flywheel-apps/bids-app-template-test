@@ -47,7 +47,6 @@ def main(test):
         f'{MANIFEST["custom"]["docker-image"]}'
 
     print('Command:\n\n'+cmd+'\n')
-    print('PYTHONUNBUFFERED is ' + os.environ.get('PYTHONUNBUFFERED','None'))
 
     command = [ w for w in cmd.split() ]
 
