@@ -15,11 +15,11 @@ import tempfile
 import shutil
 import filecmp
 
-from utils.find_gear import *
-from utils.get_user_input import *
-from utils.datalad import *
-from utils.init_test import *
-from utils.copy_test import *
+from utils.find_gear import * # variables in ALLCAPS are defined here
+from utils.get_user_input import get_user_input
+from utils.datalad import init_using_datalad
+from utils.init_test import init_test_directory, init_test_subdirs, init_test_config
+from utils.copy_test import init_by_copying
 
 
 # helpful for development:

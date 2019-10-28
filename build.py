@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+"""Run Docker build for this gear"""
 
 import os
 import subprocess as sp
 import sys
 
-from utils.find_gear import *
+from utils.find_gear import * # variables in ALLCAPS are defined here
+
 
 verbose = True
 
