@@ -195,8 +195,8 @@ if __name__ == '__main__':
     'editme'.  The comments will describe the various optional and required
     features for a BIDS App.
 
-    Use setup.py again to create more tests, and build.py and run.py in this 
-    test repository to develop your code.
+    Use setup.py again to create more tests, and build.py and run_tests.py in 
+    this test repository to develop your code.
     """
     print(msg)
 
