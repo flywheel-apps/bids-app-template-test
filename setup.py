@@ -23,7 +23,7 @@ from utils.copy_test import init_by_copying
 
 
 # helpful for development:
-use_dev_branch = True 
+use_dev_branch = False  # use master branch 
 
 
 if __name__ == '__main__':
