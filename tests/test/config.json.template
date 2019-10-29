@@ -1,0 +1,16 @@
+{
+    "config": {
+        "bool-param": false,
+        "num-things": 1,
+        "threshold": 3.1415926,
+        "n_procs": 1,
+        "verbose": "v",
+        "write-graph": false,
+        "gear-abort-on-bids-error": false,
+        "gear-log-level": "DEBUG",
+        "gear-run-bids-validation": true,
+        "gear-save-all-output": false,
+        "gear-dry-run": false,
+        "gear-FREESURFER_LICENSE": "fake fake fake"
+    }
+}

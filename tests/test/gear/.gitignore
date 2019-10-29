@@ -103,5 +103,10 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# vim
-.*.swp
+# everything that will be copied into here later
+Dockerfile
+manifest.json
+run.py
+test.sh
+utils/
+
