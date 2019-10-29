@@ -206,7 +206,7 @@ Now that you have test data, you'll iterate editing, building and running tests.
 	│   ├── config.json
 	│   ├── README.md
 	│   ├── config.json.template
-	│   ├── gear/                             <-- bids-app-template test gear is built here for testing
+	│   ├── gear/                             <-- bids-app-template test gear is cloned here for testing
 	│   │   ├── LICENSE
 	│   │   └── README.md
 	│   ├── input/
