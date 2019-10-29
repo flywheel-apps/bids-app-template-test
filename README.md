@@ -97,7 +97,7 @@ The scripts can be run from anywhere.  For instance, to re-build and then run th
 cd bids-app
 vim run.py
 ../bids-app-test/build.py
-../bids-app-test/run\_tests.py
+../bids-app-test/run_tests.py
 ```
 
 Note that the last command assumes that you have already set up the "default" test, but you probably have not done that yet.  It's a good idea to first edit the `Dockerfile`, `manifest.json`, and `run.py` files, and then use `setup.py` to create the "default" test.  This is because running the gear requires a `config.json` file and `setup` can use `manifest.json` to create it.  More on this later.
