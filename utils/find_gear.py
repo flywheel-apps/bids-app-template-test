@@ -64,15 +64,17 @@ LOG.info(msg)
 
 TESTING = ''
 if NAME == 'bids-app-template': # then test the template inside 'gear'
-    old_gear = GEAR
-    GEAR = TEST+'tests/test/gear'
-    msg = '\nTesting: GEAR changed from "'+old_gear+'" to "'+GEAR+'"\n'
-    print(msg)
-    LOG.info(msg)
 
     TESTING = 'basic'
 
     if cmd_name == 'setup.py':
+
+        old_gear = GEAR
+        GEAR = TEST+'tests/test/gear'
+        msg = '\nTesting: GEAR changed from "'+old_gear+'" to "'+GEAR+'"\n'
+        print(msg)
+        LOG.info(msg)
+
         # remove existing fiiles so they can be re-created:
         for ff in ['Dockerfile', 'manifest.json', 'run.py', 'test.sh']:
             if os.path.exists(GEAR + '/' + ff):

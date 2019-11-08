@@ -3,9 +3,9 @@ import os
 import shutil
 import json
 
-from utils.find_gear import *
-from utils.get_user_input import *
-from utils.init_test import *
+from utils.find_gear import * # variables in ALLCAPS are defined here
+from utils.get_user_input import get_user_input, get_verified_input
+from utils.init_test import init_test_directory, init_test_subdirs, init_test_config
 
 
 def get_datalad_subject(datasource, setname, subject, bids_dir):

@@ -5,8 +5,8 @@ import os
 import subprocess as sp
 import shutil
 
-from utils.find_gear import *
-from utils.get_user_input import *
+from utils.find_gear import * # variables in ALLCAPS are defined here
+from utils.get_user_input import get_verified_input
 
 
 def init_test_directory():

@@ -15,15 +15,15 @@ import tempfile
 import shutil
 import filecmp
 
-from utils.find_gear import *
-from utils.get_user_input import *
-from utils.datalad import *
-from utils.init_test import *
-from utils.copy_test import *
+from utils.find_gear import * # variables in ALLCAPS are defined here
+from utils.get_user_input import get_user_input
+from utils.datalad import init_using_datalad
+from utils.init_test import init_test_directory, init_test_subdirs, init_test_config
+from utils.copy_test import init_by_copying
 
 
 # helpful for development:
-use_dev_branch = True 
+use_dev_branch = False  # use master branch 
 
 
 if __name__ == '__main__':
@@ -195,8 +195,8 @@ if __name__ == '__main__':
     'editme'.  The comments will describe the various optional and required
     features for a BIDS App.
 
-    Use setup.py again to create more tests, and build.py and run.py in this 
-    test repository to develop your code.
+    Use setup.py again to create more tests, and build.py and run_tests.py in 
+    this test repository to develop your code.
     """
     print(msg)
 

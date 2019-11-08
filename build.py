@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+"""Run Docker build for this gear"""
 
 import os
 import subprocess as sp
 import sys
 
-from utils.find_gear import *
+from utils.find_gear import * # variables in ALLCAPS are defined here
+
 
 verbose = True
 
@@ -40,7 +42,8 @@ if STATUS == 'OK':
             print(result.stdout)
 
     if TESTING == 'basic':
-        LOG.info('Now check the results of bilding')
+        LOG.info('Now check the results of building')
+        # TODO chek the results of building
         LOG.info('Done with '+TESTING+' test.\n')
 
 sys.exit(return_code)

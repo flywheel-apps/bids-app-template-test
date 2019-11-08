@@ -47,7 +47,6 @@ def main(test):
         f'{MANIFEST["custom"]["docker-image"]}'
 
     print('Command:\n\n'+cmd+'\n')
-    #print('PYTHONUNBUFFERED is ' + os.environ.get('PYTHONUNBUFFERED','None'))
 
     command = [ w for w in cmd.split() ]
 
@@ -91,6 +90,7 @@ def main(test):
 
     if TESTING == 'basic':
         LOG.info('Now check the results of running')
+        # TODO chek the results of running
         LOG.info('Done with '+TESTING+' test.\n')
 
 if __name__ == '__main__':
