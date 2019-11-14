@@ -13,19 +13,31 @@ import argparse
 
 
 def copy(src, dst):
-    """ Copies a test directory and deletes all old log files.  """
+    """ Copies a test directory, deletes all old log files.  """
 
     if os.path.isdir(src):
 
         # here's the beef:
         shutil.copytree(src, dst, copy_function=os.link)
+
         # and remove the old test's logs (if any)
         shutil.rmtree(dst+'/logs')
         os.mkdir(dst+'/logs')
 
+        # delete the hard-linked config.json and actually
+        # copy it so it can be edited without modifying the
+        # old config.
+        os.remove(dst + '/config.json')
+        shutil.copyfile(src + '/config.json',dst + '/config.json')
+
         msg = 'Copied test from\n  ' + src + '\nto\n  ' + dst
         print(msg)
         LOG.info(msg)
+
+        msg = 'NOTE: all files were copied as HARD links except for \n'+\
+              '"confid.json".  Unless you want to modify a file in the \n'+\
+              'old test that was copied, DELETE the file and create a new one'
+        print(msg)
 
     else:
         print('ERROR: "'+args.src+'" not found.  It should be in')
