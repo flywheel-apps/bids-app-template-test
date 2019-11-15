@@ -58,7 +58,7 @@ def init_by_copying():
     dir_name = dict()
     choices = []
     for tt in tests:
-        if tt[0] != '.':
+        if tt[0] != '.' and tt[0] != '_':
             msg += "  "+str(nn)+") "+tt+"\n"
             dir_name[nn] = tt
             choices.append(str(nn))
