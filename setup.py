@@ -23,7 +23,7 @@ from utils.copy_test import init_by_copying
 
 
 # helpful for development:
-use_dev_branch = False  # use master branch 
+branch_to_use = ''  # use master branch 
 
 
 if __name__ == '__main__':
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     parser.add_argument("-t","--type",type=str,default="analysis",
                         help="type of destination")
     args = parser.parse_args()
-    print(args)
+    #print(args)
 
     # create a config.json file if arguments are provided
     if args.api_key or args.destination:
@@ -92,14 +92,16 @@ if __name__ == '__main__':
 
         with tempfile.TemporaryDirectory() as tmpdir:
             
-            if use_dev_branch:
-                branch = ' --branch dev '
+            if branch_to_use != '':
+                branch = ' --branch ' + branch_to_use + ' '
             else:
                 branch = ''
 
             cmd = 'git clone ' + branch +\
                   'git@github.com:flywheel-apps/bids-app-template.git '+\
                   tmpdir
+            print(cmd)
+            LOG.info(cmd)
             result = sp.run(cmd, shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
 
             # Copy files into the new gear, supstituting the proper name
@@ -145,8 +147,11 @@ if __name__ == '__main__':
        to put BIDS data into "work/bids" and create config.json yourself.
 
     2) Copy an existing test (using hard links so it won't take up much
-       extra space).  This will copy all of the files so you will have to
-       delete the ones you do not want to keep.
+       extra space).  This will hard-link all of the files except for 
+       "config.json" because you probably want to change that file.  If you
+       want to change others in the new test but leave the old test alone,
+       you have to delete the new file and re-create it.  Otherwise you will
+       be changing a file in both the old and new tests.
        Note: this will give errors if DataLad was used to grab the
        data: it will complain about the files that are missing
        (because only one subject was actually downloaded).

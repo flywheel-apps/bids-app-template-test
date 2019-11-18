@@ -30,8 +30,9 @@ def main(test):
         exit(-1)
 
     # Run any desired initialization for this test
-    print('Running '+('tests/' + test + '/src/start').replace('/','.'))
-    __import__(('tests/' + test + '/src/start').replace('/','.'))
+    module = ('tests/' + test + '/src/start').replace('/','.')
+    print('Running "' + module + '"')
+    __import__(module)
 
     if args.shell:
         entry = '/bin/bash'
