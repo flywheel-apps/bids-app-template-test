@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
         # run each test in the tests directory
         for test in os.listdir(TEST+'tests'):
-            if test != '.gitignore':
+            if test[0] != '.' and test[0] != '_':
                 print('\n\nRunning test "' + test + '"\n')
                 main(test)
         print('\nDone running all tests.\n')
