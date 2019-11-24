@@ -89,9 +89,9 @@ def init_test_config(test_name):
             config['inputs']['api_key']['read-only'] = manifest['inputs']['key']['read-only']
 
     # ask user for key (the default here is from the TOME project)
-    dest_id = get_verified_input('5d2761383289d60037e8b180', 
+    dest_id = get_verified_input('5dd80e738b0dc70029b59cbe', 
                                  'Enter a destination id for config.json')
-    dest_type = get_verified_input('acquisition', 'Enter an destination type for config.json')
+    dest_type = get_verified_input('analysis', 'Enter an destination type for config.json')
     # TODO: ask user for a session id directly, then find an apropriate destination from
     # that session.  Any acquisition or analysis should do since it's parent will be the
     # session.
