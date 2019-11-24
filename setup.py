@@ -23,7 +23,7 @@ from utils.copy_test import init_by_copying
 
 
 # helpful for development:
-use_dev_branch = False  # use master branch 
+branch_to_use = ''  # use master branch 
 
 
 if __name__ == '__main__':
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     parser.add_argument("-t","--type",type=str,default="analysis",
                         help="type of destination")
     args = parser.parse_args()
-    print(args)
+    #print(args)
 
     # create a config.json file if arguments are provided
     if args.api_key or args.destination:
@@ -92,14 +92,16 @@ if __name__ == '__main__':
 
         with tempfile.TemporaryDirectory() as tmpdir:
             
-            if use_dev_branch:
-                branch = ' --branch dev '
+            if branch_to_use != '':
+                branch = ' --branch ' + branch_to_use + ' '
             else:
                 branch = ''
 
             cmd = 'git clone ' + branch +\
                   'git@github.com:flywheel-apps/bids-app-template.git '+\
                   tmpdir
+            print(cmd)
+            LOG.info(cmd)
             result = sp.run(cmd, shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
 
             # Copy files into the new gear, supstituting the proper name
