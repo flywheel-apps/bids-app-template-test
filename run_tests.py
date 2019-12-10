@@ -36,10 +36,12 @@ def main(test):
 
     if args.shell:
         entry = '/bin/bash'
+        dash_args = 'ti'
     else:
         entry = FLY0+'run.py'
+        dash_args = 't'
 
-    cmd= 'docker run -ti --name shme --entrypoint='+entry+' '+\
+    cmd= 'docker run -' + dash_args + ' --name shme --entrypoint='+entry+' '+\
          '-v '+TEST+'tests/'+test+'/input:'+FLY0+'input '+\
          '-v '+TEST+'tests/'+test+'/output:'+FLY0+'output '+\
          '-v '+TEST+'tests/'+test+'/config.json:'+FLY0+'config.json '+\
@@ -50,6 +52,8 @@ def main(test):
     print('Command:\n\n'+cmd+'\n')
 
     command = [ w for w in cmd.split() ]
+
+    print(repr(command))
 
     result = sp.run(command, universal_newlines=True)
 
