@@ -105,7 +105,7 @@ if __name__ == '__main__':
             result = sp.run(cmd, shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
 
             # Copy files into the new gear, supstituting the proper name
-            for ff in ['Dockerfile','manifest.json','run.py']:
+            for ff in ['Dockerfile','manifest.json','run.py', '.gitignore']:
                 msg = 'Copying '+ff
                 print(msg)
                 LOG.info(msg)
