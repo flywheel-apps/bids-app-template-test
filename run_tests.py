@@ -53,8 +53,6 @@ def main(test):
 
     command = [ w for w in cmd.split() ]
 
-    print(repr(command))
-
     result = sp.run(command, universal_newlines=True)
 
     if args.verbose:
