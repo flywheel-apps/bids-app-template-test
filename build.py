@@ -4,6 +4,7 @@
 import os
 import subprocess as sp
 import sys
+import argparse
 
 from utils.find_gear import * # variables in ALLCAPS are defined here
 
@@ -16,9 +17,21 @@ return_code = -1
 
 if STATUS == 'OK':
 
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("-n","--no-cache",action='store_true',
+                        help="build container without cache")
+    args = parser.parse_args()
+    #print(args)
+
+
     LOG.info('Starting build...')
 
-    cmd= 'docker build --tag='+MANIFEST["custom"]["docker-image"]+' '+GEAR 
+    if args.no_cache:
+        cache = '--no-cache'
+    else:
+        cache = ''
+
+    cmd= 'docker build ' + cache + ' --tag='+MANIFEST["custom"]["docker-image"]+' '+GEAR 
 
     LOG.info('Running "'+cmd+'"')
 
