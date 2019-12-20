@@ -100,7 +100,10 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("-t", "--test", default='', nargs='*',
-                        help="the test in tests/ to run.  'all' runs all tests.")
+                        help="the test in tests/ to run.  'all' runs all" \
+                             " tests.  Can be given as just the test directory"\
+                             " name or 'tests/test_directory_name' so it can" \
+                             " be chosen using tab-completion.")
     parser.add_argument("-s", "--shell", action="store_true",
                         help="run bash in the container instead of run.py.")
     parser.add_argument("-d", "--dontrm", action="store_true",
@@ -108,6 +111,16 @@ if __name__ == '__main__':
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Print what is going on.")
     args = parser.parse_args()
+
+    re_written_test = []
+    for test in args.test:
+        if test[-1] == '/':
+            test = test[:-1]
+        if test[:6] == 'tests/':
+            re_written_test.append(test[6:])
+        else:
+            re_written_test.append(test)
+    args.test = re_written_test
 
     if args.test == '': # no arguments, run default
         test = 'default'  # run only the default test
