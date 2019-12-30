@@ -122,7 +122,7 @@ if __name__ == '__main__':
             re_written_test.append(test)
     args.test = re_written_test
 
-    if args.test == '': # no arguments, run default
+    if args.test == []: # no arguments, run default
         test = 'default'  # run only the default test
         main(test)  # run the test for this test template
 
