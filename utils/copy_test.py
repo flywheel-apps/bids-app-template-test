@@ -17,8 +17,17 @@ def copy(src, dst):
 
     if os.path.isdir(src):
 
-        # here's the beef:
-        shutil.copytree(src, dst, copy_function=os.link)
+        try:
+            # here's the beef:
+            shutil.copytree(src, dst, copy_function=os.link)
+
+        except Exception as e:
+            LOG.error(e)
+            print(e)
+            msg='WARNING: continuing despite errors'
+            print(msg)
+            LOG.info('WARNING: continuing despite errors')
+            
 
         # and remove the old test's logs (if any)
         shutil.rmtree(dst+'/logs')

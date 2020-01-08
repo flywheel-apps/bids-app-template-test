@@ -16,8 +16,7 @@ from utils.find_gear import *
 def main(test):
     """ Runs gear with the given test files """
 
-    if args.verbose:
-        print('Running test "' + test + '"')
+    print('\nRunning test "' + test + '"\n')
 
     if not os.path.exists(TEST + 'tests/' + test):
         print('Sorry, the test "' + test + '" does not exist.  ' + 
