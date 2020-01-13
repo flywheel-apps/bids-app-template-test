@@ -40,13 +40,20 @@ def main(test):
         entry = FLY0+'run.py'
         dash_args = 't'
 
+    if 'docker-image' in MANIFEST["custom"]:
+        tag = ' '+MANIFEST["custom"]["docker-image"]
+    elif 'gear-builder' in MANIFEST["custom"]:
+        tag = ' '+MANIFEST["custom"]["gear-builder"]["image"]
+    else:
+        print('FAIL: cannot determin name and version of gear from manifest.')
+        sys.exit(-1)
+
     cmd= 'docker run -' + dash_args + ' --name shme --entrypoint='+entry+' '+\
          '-v '+TEST+'tests/'+test+'/input:'+FLY0+'input '+\
          '-v '+TEST+'tests/'+test+'/output:'+FLY0+'output '+\
          '-v '+TEST+'tests/'+test+'/config.json:'+FLY0+'config.json '+\
          '-v '+TEST+'tests/'+test+'/work:'+FLY0+'work '+\
-         '-v '+GEAR+':'+FLY0+'src '+\
-        f'{MANIFEST["custom"]["docker-image"]}'
+         '-v '+GEAR+':'+FLY0+'src '+ tag
 
     print('Command:\n\n'+cmd+'\n')
 
