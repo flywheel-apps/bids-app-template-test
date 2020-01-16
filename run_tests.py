@@ -40,12 +40,20 @@ def main(test):
         entry = FLY0+'run.py'
         dash_args = 't'
 
-    cmd= 'docker run -' + dash_args + ' --name shme --entrypoint='+entry+' '+\
-         '-v '+TEST+'tests/'+test+'/input:'+FLY0+'input '+\
-         '-v '+TEST+'tests/'+test+'/output:'+FLY0+'output '+\
-         '-v '+TEST+'tests/'+test+'/config.json:'+FLY0+'config.json '+\
-         '-v '+TEST+'tests/'+test+'/work:'+FLY0+'work '+\
-         '-v '+GEAR+':'+FLY0+'src '+\
+    # Set log name to reflect current time (before run)
+    log_path = TEST+'tests/'+test+'/logs/'
+    cur_datetime = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    log_name = cur_datetime + '_log.txt'
+
+    container_name = cur_datetime + "_" + gear_name + "_" + test
+
+    cmd= f'docker run -{dash_args}  --name {container_name} '+ \
+         '--entrypoint='+entry+' '+ \
+         '-v '+TEST+'tests/'+test+'/input:'+FLY0+'input '+ \
+         '-v '+TEST+'tests/'+test+'/output:'+FLY0+'output '+ \
+         '-v '+TEST+'tests/'+test+'/config.json:'+FLY0+'config.json '+ \
+         '-v '+TEST+'tests/'+test+'/work:'+FLY0+'work '+ \
+         '-v '+GEAR+':'+FLY0+'src '+ \
         f'{MANIFEST["custom"]["docker-image"]}'
 
     print('Command:\n\n'+cmd+'\n')
@@ -58,15 +66,13 @@ def main(test):
         print(f'{cmd.split()[:2]} return code: '+str(result.returncode))
         print('output: \n' + str(result.stdout))
 
+
     # save log
-    log_path = TEST+'tests/'+test+'/logs/'
-    log_name = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")+\
-               '_log.txt'
     msg = 'Logging output to ' + log_path + log_name
     print(msg)
     LOG.info(msg)
     
-    cmd = 'docker logs shme > ' + log_path + log_name
+    cmd = f'docker logs {container_name} > ' + log_path + log_name
     print('running "' + cmd + '"')
     result = sp.run(cmd, universal_newlines=True, shell=True)
     if args.verbose:
@@ -78,7 +84,7 @@ def main(test):
         LOG.info('NOT removing container')
     else:
         LOG.info('Removing container')
-        cmd = 'docker rm shme'
+        cmd = f'docker rm {container_name}'
         print('running "' + cmd + '"')
         command = [ w for w in cmd.split() ]
         result = sp.run(command, universal_newlines=True)

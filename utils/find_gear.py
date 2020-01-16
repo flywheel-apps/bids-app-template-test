@@ -16,7 +16,7 @@ import sys
 import shutil
 
 
-verbose = False
+verbose = True
 
 path_to_me = os.path.dirname(os.path.realpath(__file__))
 if verbose:
