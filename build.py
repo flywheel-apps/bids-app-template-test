@@ -31,7 +31,15 @@ if STATUS == 'OK':
     else:
         cache = ''
 
-    cmd= 'docker build ' + cache + ' --tag='+MANIFEST["custom"]["docker-image"]+' '+GEAR 
+    if 'docker-image' in MANIFEST["custom"]:
+        tag = ' --tag='+MANIFEST["custom"]["docker-image"]
+    elif 'gear-builder' in MANIFEST["custom"]:
+        tag = ' --tag='+MANIFEST["custom"]["gear-builder"]["image"]
+    else:
+        print('FAIL: cannot determin name and version of gear from manifest.')
+        sys.exit(-1)
+
+    cmd= 'docker build ' + cache + tag + ' ' + GEAR 
 
     LOG.info('Running "'+cmd+'"')
 

@@ -33,6 +33,12 @@ def main(test):
     print('Running "' + module + '"')
     __import__(module)
 
+    # Set log name to reflect current time (before run)
+    log_path = TEST+'tests/'+test+'/logs/'
+    cur_datetime = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    log_name = cur_datetime + '_log.txt'
+
+    # Set variables to use in cmd
     if args.shell:
         entry = '/bin/bash'
         dash_args = 'ti'
@@ -40,12 +46,15 @@ def main(test):
         entry = FLY0+'run.py'
         dash_args = 't'
 
-    # Set log name to reflect current time (before run)
-    log_path = TEST+'tests/'+test+'/logs/'
-    cur_datetime = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    log_name = cur_datetime + '_log.txt'
-
     container_name = cur_datetime + "_" + gear_name + "_" + test
+
+    if 'docker-image' in MANIFEST["custom"]:
+        tag = ' '+MANIFEST["custom"]["docker-image"]
+    elif 'gear-builder' in MANIFEST["custom"]:
+        tag = ' '+MANIFEST["custom"]["gear-builder"]["image"]
+    else:
+        print('FAIL: cannot determin name and version of gear from manifest.')
+        sys.exit(-1)
 
     cmd= f'docker run -{dash_args}  --name {container_name} '+ \
          '--entrypoint='+entry+' '+ \
@@ -53,8 +62,7 @@ def main(test):
          '-v '+TEST+'tests/'+test+'/output:'+FLY0+'output '+ \
          '-v '+TEST+'tests/'+test+'/config.json:'+FLY0+'config.json '+ \
          '-v '+TEST+'tests/'+test+'/work:'+FLY0+'work '+ \
-         '-v '+GEAR+':'+FLY0+'src '+ \
-        f'{MANIFEST["custom"]["docker-image"]}'
+         '-v '+GEAR+':'+FLY0+'src '+ tag
 
     print('Command:\n\n'+cmd+'\n')
 
