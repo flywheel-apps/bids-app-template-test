@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-""" This displays all files that are hard linked
+"""This displays all files that are hard linked.
+
+    Args:
+        test (directory name): optional, name of test to show results for
+
+    This must be run from the top <gearname>-test directory where the
+    command is.
 """
 
 import os
@@ -67,6 +73,3 @@ for kk,vv in inode_path.items():
             print('  ' + vvv.split('/')[1])
 
         print()
-
-
-# vi:set autoindent ts=4 sw=4 expandtab : See Vim, :help 'modeline'
