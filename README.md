@@ -1,3 +1,5 @@
+This repository is deprecated.  Please use [`bids-app-template`](https://github.com/flywheel-apps/bids-app-template) instead.
+
 # bids-app-template-test
 Test environment for [`bids-app-template`](https://github.com/flywheel-apps/bids-app-template).
 
